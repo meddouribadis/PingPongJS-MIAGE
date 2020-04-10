@@ -24,19 +24,23 @@ var game = {
     },
 
     playerOne : {
-        width : 5,
+        width : 10,
         height : 50,
         color : "#FFFFFF",
-        posX : 10,
-        posY : 200
+        posX : 30,
+        posY : 200,
+        goUp : false,
+        goDown : false
     },
 
     playerTwo : {
-        width : 5,
+        width : 10,
         height : 50,
         color : "#FFFFFF",
-        posX : 600,
-        posY : 200
+        posX : 650,
+        posY : 200,
+        goUp : false,
+        goDown : false
     },
 
     groundWidth : 700,
@@ -94,5 +98,26 @@ var game = {
 
     clearLayer : function(targetLayer) {
         targetLayer.clear();
+    },
+
+    movePlayers : function() {
+        if ( game.control.controlSystem == "KEYBOARD" ) {
+            // keyboard control
+            if ( game.playerOne.goUp ) {
+                game.playerOne.posY-=5;
+            } else if ( game.playerOne.goDown ) {
+                game.playerOne.posY+=5;
+            }
+        } else if ( game.control.controlSystem == "MOUSE" ) {
+            // mouse control
+            if (game.playerOne.goUp && game.playerOne.posY > game.control.mousePointer)
+                game.playerOne.posY-=5;
+            else if (game.playerOne.goDown && game.playerOne.posY < game.control.mousePointer)
+                game.playerOne.posY+=5;
+        }
+    },
+
+    initMouse : function(onMouseMoveFunction) {
+        window.onmousemove = onMouseMoveFunction;
     },
 };
