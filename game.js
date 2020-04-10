@@ -64,6 +64,12 @@ var game = {
         this.displayScore(0,0);
         this.displayBall(200,200);
         this.displayPlayers();
+        this.initKeyboard(game.control.onKeyDown, game.control.onKeyUp);
+    },
+
+    initKeyboard : function(onKeyDownFunction, onKeyUpFunction) {
+        window.onkeydown = onKeyDownFunction;
+        window.onkeyup = onKeyUpFunction;
     },
 
     displayScore : function(scorePlayer1, scorePlayer2) {
