@@ -15,12 +15,34 @@ var game = {
             this.posY += this.directionY * this.speed;
         },
 
-        bounce : function() {
-            if ( this.posX > game.groundWidth || this.posX < 0 )
+        bounce : function(soundToPlay) {
+            if ( this.posX > game.groundWidth || this.posX < 0 ) {
                 this.directionX = -this.directionX;
-            if ( this.posY > game.groundHeight || this.posY < 0  )
+                soundToPlay.play();
+            }
+            if ( this.posY > game.groundHeight || this.posY < 0  ) {
                 this.directionY = -this.directionY;
+                var soundPromise = soundToPlay.play();
+                if (soundPromise !== undefined) {
+                    soundPromise.then(_ => {
+                        // Autoplay started!
+                    }).catch(error => {
+                        // Autoplay was prevented.
+                        // Show a "Play" button so that user can start playback.
+                    });
+                }
+            }
         },
+
+        collide : function(anotherItem) {
+            if ( !( this.posX >= anotherItem.posX + anotherItem.width || this.posX <= anotherItem.posX - this.width
+                || this.posY >= anotherItem.posY + anotherItem.height || this.posY <= anotherItem.posY - this.height ) ) {
+                // Collision
+                return true;
+            }
+            return false;
+        },
+
     },
 
     playerOne : {
@@ -51,6 +73,8 @@ var game = {
     scorePosPlayer1 : 300,
     scorePosPlayer2 : 365,
 
+    wallSound : null,
+    playerSound : null,
     groundLayer : null,
     scoreLayer : null,
     playersBallLayer : null,
@@ -69,6 +93,8 @@ var game = {
         this.displayBall(200,200);
         this.displayPlayers();
         this.initKeyboard(game.control.onKeyDown, game.control.onKeyUp);
+        this.wallSound = new Audio("./sound/pingMur.ogg");
+        this.playerSound = new Audio("./sound/pingRaquette.ogg");
     },
 
     initKeyboard : function(onKeyDownFunction, onKeyUpFunction) {
@@ -92,7 +118,7 @@ var game = {
 
     moveBall : function() {
         this.ball.move();
-        this.ball.bounce();
+        this.ball.bounce(this.wallSound);
         this.displayBall();
     },
 
@@ -119,5 +145,26 @@ var game = {
 
     initMouse : function(onMouseMoveFunction) {
         window.onmousemove = onMouseMoveFunction;
+    },
+
+    collideBallWithPlayersAndAction : function() {
+        if ( this.ball.collide(game.playerOne) ) {
+            game.ball.directionX = -game.ball.directionX;
+            var soundPromise = this.playerSound.play();
+            if (soundPromise !== undefined) {
+                soundPromise.then(_ => {
+                }).catch(error => {
+                });
+            }
+        }
+        if ( this.ball.collide(game.playerTwo) ) {
+            game.ball.directionX = -game.ball.directionX;
+            var soundPromise = this.playerSound.play();
+            if (soundPromise !== undefined) {
+                soundPromise.then(_ => {
+                }).catch(error => {
+                });
+            }
+        }
     },
 };
