@@ -10,7 +10,11 @@ game.display = {
         width: "",
         height: "",
         backgroundColor: "",
-        zIndex: ""
+        zIndex: "",
+
+        clear : function() {
+            this.context2D.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        },
     },
 
     createLayer: function (name, width, height, htmlContainer, zIndex, backgroundColor, x, y) {
@@ -59,5 +63,12 @@ game.display = {
     drawRectangleInLayer : function(targetLayer, width, heigth, color, x, y) {
         targetLayer.context2D.fillStyle = color;
         targetLayer.context2D.fillRect (x, y, width, heigth);
+    },
+
+    drawTextInLayer : function(targetLayer, text, font, color, x, y) {
+        targetLayer.context2D.font = font;
+        targetLayer.context2D.fillStyle = color;
+        targetLayer.context2D.fillText(text, x, y);
     }
+
 }
