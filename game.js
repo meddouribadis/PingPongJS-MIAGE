@@ -9,10 +9,13 @@ var game = {
         directionX: 1,
         directionY: 1,
         speed: 1,
+        inGame : false,
 
         move : function() {
-            this.posX += this.directionX * this.speed;
-            this.posY += this.directionY * this.speed;
+            if ( this.inGame ) {
+                this.posX += this.directionX * this.speed;
+                this.posY += this.directionY * this.speed;
+            }
         },
 
         bounce : function(soundToPlay) {
@@ -43,6 +46,16 @@ var game = {
             return false;
         },
 
+        lost : function(player) {
+            var returnValue = false;
+            if ( player.originalPosition == "left" && this.posX < player.posX - this.width ) {
+                returnValue = true;
+            } else if ( player.originalPosition == "right" && this.posX > player.posX + player.width ) {
+                returnValue = true;
+            }
+            return returnValue;
+        },
+
     },
 
     playerOne : {
@@ -52,7 +65,10 @@ var game = {
         posX : 30,
         posY : 200,
         goUp : false,
-        goDown : false
+        goDown : false,
+        originalPosition : "left",
+        score : 0,
+        ai : false
     },
 
     playerTwo : {
@@ -62,7 +78,10 @@ var game = {
         posX : 650,
         posY : 200,
         goUp : false,
-        goDown : false
+        goDown : false,
+        originalPosition : "right",
+        score: 0,
+        ai : true
     },
 
     groundWidth : 700,
@@ -78,6 +97,7 @@ var game = {
     groundLayer : null,
     scoreLayer : null,
     playersBallLayer : null,
+    partyStarted : false,
 
     init : function() {
         this.groundLayer = game.display.createLayer("terrain", this.groundWidth, this.groundHeight, undefined, 0, "#000000", 0, 0);
@@ -95,6 +115,7 @@ var game = {
         this.initKeyboard(game.control.onKeyDown, game.control.onKeyUp);
         this.wallSound = new Audio("./sound/pingMur.ogg");
         this.playerSound = new Audio("./sound/pingRaquette.ogg");
+        game.ai.setPlayerAndBall(this.playerTwo, this.ball);
     },
 
     initKeyboard : function(onKeyDownFunction, onKeyUpFunction) {
@@ -167,4 +188,25 @@ var game = {
             }
         }
     },
+
+    lostBall : function() {
+        if ( this.ball.lost(this.playerOne) ) {
+            this.playerTwo.score++;
+            this.ball.inGame = false;
+
+            if ( this.playerOne.ai ) {
+                setTimeout(game.ai.startBall(), 3000);
+            }
+        } else if ( this.ball.lost(this.playerTwo) ) {
+            this.playerOne.score++;
+            this.ball.inGame = false;
+
+            if ( this.playerTwo.ai ) {
+                setTimeout(game.ai.startBall(), 3000);
+            }
+        }
+        this.scoreLayer.clear();
+        this.displayScore(this.playerOne.score, this.playerTwo.score);
+    },
+
 };

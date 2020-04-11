@@ -5,6 +5,7 @@
 <script src="game.display.js"></script>
 <script src="game.keycode.js"></script>
 <script src="game.control.js"></script>
+<script src="game.ai.js"></script>
 
 <script>
     (function () {
@@ -22,6 +23,10 @@
             game.movePlayers();
             game.displayPlayers();
             game.moveBall();
+            if (game.ball.inGame){
+                game.lostBall();
+            }
+            game.ai.move();
             game.collideBallWithPlayersAndAction();
             requestAnimId = window.requestAnimationFrame(main); // rappel de main au prochain rafraîchissement de la page
         };
