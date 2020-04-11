@@ -57,6 +57,10 @@ var game = {
             return returnValue;
         },
 
+        speedUp: function() {
+            this.speed = this.speed + .1;
+        },
+
     },
 
     playerOne : {
@@ -124,6 +128,7 @@ var game = {
         this.wallSound = new Audio("./sound/pingMur.ogg");
         this.playerSound = new Audio("./sound/pingRaquette.ogg");
         game.ai.setPlayerAndBall(this.playerTwo, this.ball);
+        game.speedUpBall();
     },
 
     initKeyboard : function(onKeyDownFunction, onKeyUpFunction) {
@@ -182,8 +187,9 @@ var game = {
 
     collideBallWithPlayersAndAction : function() {
         if ( this.ball.collide(game.playerOne) ) {
-            game.ball.directionX = -game.ball.directionX;
-            var soundPromise = this.playerSound.play();
+            this.changeBallPath(game.playerOne, game.ball);
+
+            let soundPromise = this.playerSound.play();
             if (soundPromise !== undefined) {
                 soundPromise.then(_ => {
                 }).catch(error => {
@@ -191,8 +197,8 @@ var game = {
             }
         }
         if ( this.ball.collide(game.playerTwo) ) {
-            game.ball.directionX = -game.ball.directionX;
-            var soundPromise = this.playerSound.play();
+            this.changeBallPath(game.playerTwo, game.ball);
+            let soundPromise = this.playerSound.play();
             if (soundPromise !== undefined) {
                 soundPromise.then(_ => {
                 }).catch(error => {
@@ -247,8 +253,65 @@ var game = {
         return returnValue;
     },
 
+    changeBallPath : function(player, ball) {
+        if (player.originalPosition == "left") {
+            switch (game.ballOnPlayer(player, ball)) {
+                case "TOP":
+                    ball.directionX = 1;
+                    ball.directionY = -3;
+                    break;
+                case "MIDDLETOP":
+                    ball.directionX = 1;
+                    ball.directionY = -1;
+                    break;
+                case "CENTER":
+                    ball.directionX = 2;
+                    ball.directionY = 0;
+                    break;
+                case "MIDDLEBOTTOM":
+                    ball.directionX = 1;
+                    ball.directionY = 1;
+                    break;
+                case "BOTTOM":
+                    ball.directionX = 1;
+                    ball.directionY = 3;
+                    break;
+            }
+        } else {
+            switch (game.ballOnPlayer(player, ball)) {
+                case "TOP":
+                    ball.directionX = -1;
+                    ball.directionY = -3;
+                    break;
+                case "MIDDLETOP":
+                    ball.directionX = -1;
+                    ball.directionY = -1;
+                    break;
+                case "CENTER":
+                    ball.directionX = -2;
+                    ball.directionY = 0;
+                    break;
+                case "MIDDLEBOTTOM":
+                    ball.directionX = -1;
+                    ball.directionY = 1;
+                    break;
+                case "BOTTOM":
+                    ball.directionX = -1;
+                    ball.directionY = 3;
+                    break;
+            }
+        }
+    },
+
+    speedUpBall: function() {
+        setInterval(function() {
+            game.ball.speedUp();
+        }, 5000);
+    },
+
     reinitGame : function() {
         this.ball.inGame = false;
+        this.ball.speed = 1;
         this.playerOne.score = 0;
         this.playerTwo.score = 0;
         this.scoreLayer.clear();
