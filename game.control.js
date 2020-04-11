@@ -15,7 +15,7 @@ game.control = {
 
         if ( event.keyCode == game.keycode.SPACEBAR ) {
 
-            if(game.partyStarted == false){
+            if(!game.partyStarted && game.gameOn){
                 var sound = new Audio("./music/pkmnbattle.mp3");
                 var soundPromise = sound.play();
                 if (soundPromise !== undefined) {
@@ -25,7 +25,7 @@ game.control = {
                 }
                 game.partyStarted = true;
             }
-            if ( event.keyCode == game.keycode.SPACEBAR && !game.ball.inGame ) {
+            if ( event.keyCode == game.keycode.SPACEBAR && !game.ball.inGame && game.gameOn ) {
                 game.ball.inGame = true;
                 game.ball.posX = game.playerOne.posX + game.playerOne.width;
                 game.ball.posY = game.playerOne.posY;
@@ -60,6 +60,14 @@ game.control = {
         } else {
             game.playerOne.goDown = false;
             game.playerOne.goUp = false;
+        }
+    },
+
+    onStartGameClickButton : function() {
+        console.log("Clicked")
+        if ( !game.gameOn ) {
+            game.reinitGame();
+            game.gameOn = true;
         }
     }
 
