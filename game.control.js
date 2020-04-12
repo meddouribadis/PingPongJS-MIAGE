@@ -27,8 +27,8 @@ game.control = {
             }
             if ( event.keyCode == game.keycode.SPACEBAR && !game.ball.inGame && game.gameOn ) {
                 game.ball.inGame = true;
-                game.ball.posX = game.playerOne.posX + game.playerOne.width;
-                game.ball.posY = game.playerOne.posY;
+                game.ball.sprite.posX = game.playerOne.sprite.posX + game.playerOne.sprite.width;
+                game.ball.sprite.posY = game.playerOne.sprite.posY;
                 game.ball.directionX = 1;
                 game.ball.directionY = 1;
             }

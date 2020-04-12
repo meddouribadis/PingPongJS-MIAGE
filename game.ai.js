@@ -30,34 +30,34 @@ game.ai = {
     },
 
     followBall : function() {
-        if ( this.ball.posY < this.player.posY + this.player.height/2 ) {
+        if ( this.ball.sprite.posY < this.player.sprite.posY + this.player.sprite.height/2 ) {
             // la position de la balle est sur l'écran, au dessus de celle de la raquette
-            this.player.posY--;
-        } else if ( this.ball.posY > this.player.posY + this.player.height/2 ) {
+            this.player.sprite.posY--;
+        } else if ( this.ball.sprite.posY > this.player.sprite.posY + this.player.sprite.height/2 ) {
             // la position de la balle est sur l'écran, en dessous de celle de la raquette
-            this.player.posY++;
+            this.player.sprite.posY++;
         }
     },
 
     goCenter : function() {
-        if ( this.player.posY + this.player.height/2 > game.groundHeight / 2 ) {
-            this.player.posY--;
-        } else if ( this.player.posY + this.player.height/2 < game.groundHeight / 2 ) {
-            this.player.posY++;
+        if ( this.player.sprite.posY + this.player.sprite.height/2 > game.groundHeight / 2 ) {
+            this.player.sprite.posY--;
+        } else if ( this.player.sprite.posY + this.player.sprite.height/2 < game.groundHeight / 2 ) {
+            this.player.sprite.posY++;
         }
     },
 
     startBall : function() {
         if ( this.player.originalPosition == "right" ) {
             this.ball.inGame = true;
-            this.ball.posX = this.player.posX;
-            this.ball.posY = this.player.posY;
+            this.ball.sprite.posX = this.player.sprite.posX;
+            this.ball.sprite.posY = this.player.sprite.posY;
             this.ball.directionX = -1;
             this.ball.directionY = 1;
         } else {
             this.ball.inGame = true;
-            this.ball.posX = this.player.posX + this.player.width;
-            this.ball.posY = this.player.posY;
+            this.ball.sprite.posX = this.player.sprite.posX + this.player.sprite.width;
+            this.ball.sprite.posY = this.player.sprite.posY;
             this.ball.directionX = 1;
             this.ball.directionY = 1;
         }
