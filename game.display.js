@@ -17,6 +17,31 @@ game.display = {
         },
     },
 
+    sprite : {
+        width : 0,
+        height : 0,
+        posX : null,
+        posY : null,
+        imagePath : "",
+        img : null
+    },
+
+    createSprite : function(width, height, posX, posY, imagePath) {
+        var sprite = Object.create(this.sprite);
+
+        sprite.width = width;
+        sprite.height = height;
+        sprite.posX = posX;
+        sprite.posY = posY;
+        sprite.imagePath = imagePath;
+        sprite.img = new Image();
+        sprite.img.src = imagePath;
+        sprite.img.width = width;
+        sprite.img.height = height;
+
+        return sprite;
+    },
+
     createLayer: function (name, width, height, htmlContainer, zIndex, backgroundColor, x, y) {
         var layer = Object.create(this.layer);
 
@@ -69,6 +94,10 @@ game.display = {
         targetLayer.context2D.font = font;
         targetLayer.context2D.fillStyle = color;
         targetLayer.context2D.fillText(text, x, y);
+    },
+
+    drawImageInLayer : function(targetLayer, image, x, y) {
+        targetLayer.context2D.drawImage(image, x, y);
     }
 
 }

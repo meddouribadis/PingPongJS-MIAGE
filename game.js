@@ -10,6 +10,7 @@ var game = {
         directionY: 1,
         speed: 1,
         inGame : false,
+        imagePath : "./img/ball.png",
 
 
         move : function() {
@@ -61,11 +62,18 @@ var game = {
             this.speed = this.speed + .1;
         },
 
+        initImage : function(width, height) {
+            this.img = new Image(width, height);
+            this.img.src = this.imagePath;
+            this.img.width = width;
+            this.img.height = height;
+        },
+
     },
 
     playerOne : {
-        width : 10,
-        height : 50,
+        width : 15,
+        height : 70,
         color : "#FFFFFF",
         posX : 30,
         posY : 200,
@@ -73,12 +81,21 @@ var game = {
         goDown : false,
         originalPosition : "left",
         score : 0,
-        ai : false
+        ai : false,
+        imagePath : "./img/playerOne.png",
+
+        initImage : function(width, height) {
+            this.img = new Image(width, height);
+            this.img.src = this.imagePath;
+            this.img.width = width;
+            this.img.height = height;
+        }
+
     },
 
     playerTwo : {
-        width : 10,
-        height : 50,
+        width : 15,
+        height : 70,
         color : "#FFFFFF",
         posX : 650,
         posY : 200,
@@ -86,7 +103,16 @@ var game = {
         goDown : false,
         originalPosition : "right",
         score: 0,
-        ai : true
+        ai : true,
+        imagePath : "./img/playerTwo.png",
+
+        initImage : function(width, height) {
+            this.img = new Image(width, height);
+            this.img.src = this.imagePath;
+            this.img.width = width;
+            this.img.height = height;
+        }
+
     },
 
     groundWidth : 700,
@@ -121,12 +147,20 @@ var game = {
         game.display.drawTextInLayer(this.playersBallLayer, "JOUEURSETBALLE", "10px Arial", "#FF0000", 100, 100);
 
         this.displayScore(0,0);
+
+        this.ball.initImage(10,10);
         this.displayBall(200,200);
+
+        this.playerOne.initImage(15,70);
+        this.playerTwo.initImage(15,70);
         this.displayPlayers();
+
         this.initKeyboard(game.control.onKeyDown, game.control.onKeyUp);
         this.initStartGameButton();
+
         this.wallSound = new Audio("./sound/pingMur.ogg");
         this.playerSound = new Audio("./sound/pingRaquette.ogg");
+
         game.ai.setPlayerAndBall(this.playerTwo, this.ball);
         game.speedUpBall();
     },
@@ -146,12 +180,12 @@ var game = {
     },
 
     displayBall : function() {
-        game.display.drawRectangleInLayer(this.playersBallLayer, this.ball.width, this.ball.height, this.ball.color, this.ball.posX, this.ball.posY);
+        game.display.drawImageInLayer(this.playersBallLayer, this.ball.img, this.ball.posX, this.ball.posY);
     },
 
     displayPlayers : function() {
-        game.display.drawRectangleInLayer(this.playersBallLayer, this.playerOne.width, this.playerOne.height, this.playerOne.color, this.playerOne.posX, this.playerOne.posY);
-        game.display.drawRectangleInLayer(this.playersBallLayer, this.playerTwo.width, this.playerTwo.height, this.playerTwo.color, this.playerTwo.posX, this.playerTwo.posY);
+        game.display.drawImageInLayer(this.playersBallLayer, this.playerOne.img, this.playerOne.posX, this.playerOne.posY);
+        game.display.drawImageInLayer(this.playersBallLayer, this.playerTwo.img, this.playerTwo.posX, this.playerTwo.posY);
     },
 
     moveBall : function() {
