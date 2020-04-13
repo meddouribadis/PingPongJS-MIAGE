@@ -1,0 +1,23 @@
+{
+  "name": "pingpong-miage",
+  "version": "1.0.0",
+  "description": "MEDDOURI Badis Ping Pong Multiplayer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meddouribadis/PingPongJS-MIAGE.git"
+  },
+  "keywords": [
+    "ping",
+    "pong"
+  ],
+  "author": "MEDDOURI Badis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meddouribadis/PingPongJS-MIAGE/issues"
+  },
+  "homepage": "https://github.com/meddouribadis/PingPongJS-MIAGE#readme"
+}
