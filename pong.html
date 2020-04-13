@@ -5,13 +5,17 @@
         <link rel="stylesheet" href="pong.css">
     </head>
     <body>
+        <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+            <img src="https://www.univ-evry.fr/fileadmin/mediatheque/logo-ueve.png" class="img-fluid rounded mx-auto d-block" alt="Université d'Evry">
+        </header>
     </body>
+
+    <script src="conf.js"></script>
     <script src="game.js"></script>
     <script src="game.display.js"></script>
     <script src="game.keycode.js"></script>
     <script src="game.control.js"></script>
     <script src="game.ai.js"></script>
-    <script src="game.conf.js"></script>
 
     <script>
         (function () {
@@ -42,6 +46,40 @@
             // fin du code isolé
         })();
     </script>
-    <div id="menu"><input id="startGame" type="button" value="Start Game"></div>
-    <div id="divGame"></div>
+    <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
+            <div class="col-12 col-md-3 col-xl-2 bd-sidebar py-md-3 pl-md-5">
+                <button id="startGame" type="button" class="btn btn-primary btn-lg btn-block">Start !</button>
+            </div>
+
+            <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content">
+                <div id="divGame"></div>
+            </main>
+
+            <div class="d-none d-xl-block col-xl-2 bd-toc">
+                <ul class="section-nav">
+                    <li class="toc-entry toc-h2"><a href="#examples">Examples</a></li>
+                    <li class="toc-entry toc-h2"><a href="#button-tags">Button tags</a></li>
+                    <li class="toc-entry toc-h2"><a href="#outline-buttons">Outline buttons</a></li>
+                    <li class="toc-entry toc-h2"><a href="#sizes">Sizes</a></li>
+                    <li class="toc-entry toc-h2"><a href="#active-state">Active state</a></li>
+                    <li class="toc-entry toc-h2"><a href="#disabled-state">Disabled state</a></li>
+                    <li class="toc-entry toc-h2"><a href="#button-plugin">Button plugin</a>
+                        <ul>
+                            <li class="toc-entry toc-h3"><a href="#toggle-states">Toggle states</a></li>
+                            <li class="toc-entry toc-h3"><a href="#checkbox-and-radio-buttons">Checkbox and radio buttons</a></li>
+                            <li class="toc-entry toc-h3"><a href="#methods">Methods</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+
+        </div>
+    </div>
+
 </html>

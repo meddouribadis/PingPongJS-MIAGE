@@ -1,5 +1,12 @@
 var game = {
 
+    devResX : 1366,
+    devResY : 738,
+    targeResX : null,
+    targetResY : null,
+    ratioResX : null,
+    ratioResY : null,
+
     ball : {
         sprite : null,
         color : "#FFFFFF",
@@ -59,13 +66,6 @@ var game = {
             this.speed = this.speed + .1;
         },
 
-        initImage : function(width, height) {
-            this.img = new Image(width, height);
-            this.img.src = this.imagePath;
-            this.img.width = width;
-            this.img.height = height;
-        },
-
     },
 
     playerOne : {
@@ -109,14 +109,16 @@ var game = {
     init : function() {
         this.divGame = document.getElementById("divGame");
         this.startGameButton = document.getElementById("startGame");
+        this.initScreenRes();
+        this.resizeDisplayData(conf,this.ratioResX,this.ratioResY);
 
-        this.groundLayer= game.display.createLayer("terrain", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 0, "#000000", 10, 50);
+        this.groundLayer= game.display.createLayer("terrain", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 0, "#000000", 0, 0);
         game.display.drawRectangleInLayer(this.groundLayer, conf.NETWIDTH, conf.GROUNDLAYERHEIGHT, this.netColor, conf.GROUNDLAYERWIDTH/2 - conf.NETWIDTH/2, 0);
 
-        this.scoreLayer = game.display.createLayer("score", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 1, undefined, 10, 50);
+        this.scoreLayer = game.display.createLayer("score", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 1, undefined, 0, 0);
         game.display.drawTextInLayer(this.scoreLayer , "SCORE", "10px Arial", "#FF0000", 10, 10);
 
-        this.playersBallLayer = game.display.createLayer("joueursetballe", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 2, undefined, 10, 50);
+        this.playersBallLayer = game.display.createLayer("joueursetballe", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 2, undefined, 0, 0);
         game.display.drawTextInLayer(this.playersBallLayer, "JOUEURSETBALLE", "10px Arial", "#FF0000", 100, 100);
 
         this.displayScore(0,0);
@@ -145,6 +147,24 @@ var game = {
 
     initStartGameButton : function() {
         this.startGameButton.onclick = game.control.onStartGameClickButton;
+    },
+
+    initScreenRes : function() {
+        this.targetResX = window.screen.availWidth;
+        this.targetResY = window.screen.availHeight;
+        this.ratioResX = this.targetResX/this.devResX;
+        this.ratioResY = this.targetResY/this.devResY;
+    },
+
+    resizeDisplayData : function(object, ratioX, ratioY) {
+        var property;
+        for ( property in object ) {
+            if ( property.match(/^.*X.*$/i) || property.match(/^.*WIDTH.*$/i) ) {
+                object[property] = Math.round(object[property] * ratioX);
+            } else {
+                object[property] = Math.round(object[property] * ratioY);
+            }
+        }
     },
 
     displayScore : function(scorePlayer1, scorePlayer2) {

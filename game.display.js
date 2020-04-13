@@ -97,8 +97,7 @@ game.display = {
     },
 
     drawImageInLayer : function(targetLayer, image, x, y) {
-        let ctx = targetLayer.canvas.getContext("2d");
-        ctx.drawImage(image, x, y);
-    }
+        targetLayer.context2D.drawImage(image, x, y);
+    },
 
 }
