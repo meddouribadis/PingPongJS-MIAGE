@@ -377,6 +377,33 @@ var game = {
         this.playerTwo.sprite.posY = player2.posY;
         this.playerTwo.originalPosition = player2.originalPosition;
         this.playerTwo.imagePath = player2.imagePath;
+    },
+
+    resetGame(){
+        this.playerOne = {
+            sprite : null,
+                color : "#FFFFFF",
+                goUp : false,
+                goDown : false,
+                originalPosition : "left",
+                score : 0,
+                ai : false,
+                imagePath : "./img/playerOne.png",
+        };
+
+        this.playerTwo = {
+                sprite : null,
+                color : "#FFFFFF",
+                goUp : false,
+                goDown : false,
+                originalPosition : "right",
+                score: 0,
+                ai : true,
+                imagePath : "./img/playerTwo.png",
+        };
+
+        this.playerOne.sprite = game.display.createSprite(conf.PLAYERONEWIDTH,conf.PLAYERONEHEIGHT,conf.PLAYERONEPOSX,conf.PLAYERONEPOSY,"./img/playerOne.png");
+        this.playerTwo.sprite = game.display.createSprite(conf.PLAYERTWOWIDTH,conf.PLAYERTWOHEIGHT,conf.PLAYERTWOPOSX,conf.PLAYERTWOPOSY,"./img/playerTwo.png");
     }
 
 };

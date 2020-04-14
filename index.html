@@ -122,6 +122,11 @@
                     game.setPlayer(players[1], players[0]);
                 }
             });
+
+            socket.on('reset', function(message){
+                game.resetGame();
+                game.reinitGame();
+            });
         });
 
     </script>

@@ -66,6 +66,7 @@ io.sockets.on('connection', function (socket) {
     };
 
     if(numberOfPlayer == 2){
+        console.log(players);
         players[socket.id].posX = 650;
         players[socket.id].posY = 200;
         players[socket.id].originalPosition = "left";
@@ -141,6 +142,14 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', () => {
         numberOfPlayer--;
         delete players[socket.id];
+        io.emit('reset', "reset");
+        if(numberOfPlayer > 0){
+            var idTemp = Object.keys(players)[0];
+            players[idTemp].posX = 30;
+            players[idTemp].posY = 200;
+            players[idTemp].originalPosition = "right";
+            players[idTemp].imagePath = "./img/playerOne.png";
+        }
     });
 
     socket.on('movements', function (message) {
