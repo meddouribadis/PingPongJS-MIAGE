@@ -123,6 +123,17 @@
                 }
             });
 
+            socket.on('updateBall', function(data){
+
+                game.ball.sprite.posX = data.posX;
+                game.ball.sprite.posY = data.posY;
+                game.ball.directionX = data.directionX;
+                game.ball.directionY = data.directionY;
+                game.ball.speed = data.speed;
+                game.ball.inGame = data.inGame;
+
+            });
+
             socket.on('reset', function(message){
                 game.resetGame();
                 game.reinitGame();

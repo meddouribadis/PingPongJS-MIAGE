@@ -66,7 +66,6 @@ io.sockets.on('connection', function (socket) {
     };
 
     if(numberOfPlayer == 2){
-        console.log(players);
         players[socket.id].posX = 650;
         players[socket.id].posY = 200;
         players[socket.id].originalPosition = "left";
@@ -74,37 +73,26 @@ io.sockets.on('connection', function (socket) {
     }
 
     ball = {
-        sprite : null,
-        color : "#FFFFFF",
+        posX : 0,
+        posY : 0,
         directionX: 1,
         directionY: 1,
         speed: 1,
         inGame : false,
-        imagePath : "./img/ball.png",
 
         move : function() {
             if ( this.inGame ) {
-                this.sprite.posX += this.directionX * this.speed;
-                this.sprite.posY += this.directionY * this.speed;
+                this.posX += this.directionX * this.speed;
+                this.posY += this.directionY * this.speed;
             }
         },
 
-        bounce : function(soundToPlay) {
-            if ( this.sprite.posX > conf.GROUNDLAYERWIDTH || this.sprite.posX < 0 ) {
+        bounce : function() {
+            if (this.posX > 700 || this.posX < 0) {
                 this.directionX = -this.directionX;
-                soundToPlay.play();
             }
-            if ( this.sprite.posY > conf.GROUNDLAYERHEIGHT || this.sprite.posY < 0  ) {
+            if (this.posY > 400 || this.posY < 0) {
                 this.directionY = -this.directionY;
-                var soundPromise = soundToPlay.play();
-                if (soundPromise !== undefined) {
-                    soundPromise.then(_ => {
-                        // Autoplay started!
-                    }).catch(error => {
-                        // Autoplay was prevented.
-                        // Show a "Play" button so that user can start playback.
-                    });
-                }
             }
         },
 
@@ -153,8 +141,6 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('movements', function (message) {
-        //console.log(message);
-        //console.log(socket.id);
         io.emit('cool', message.posY);
         players[socket.id].posY = message.posY;
         io.emit('updateMove', {
@@ -163,11 +149,18 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    function update() {
-        io.volatile.emit('players list', Object.values(players));
+    function moveBall(){
+        if(numberOfPlayer == 2){
+            ball.inGame = true;
+            ball.bounce();
+            ball.move();
+        }
+        io.emit("updateBall", ball);
     }
 
-    setInterval(update, 1000/60);
+    setInterval(() => {
+        moveBall();
+    }, 50);
 });
 
 
