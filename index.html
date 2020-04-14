@@ -113,6 +113,15 @@
                 }
 
             });
+
+            socket.on('updatePlayers', function(players){
+                if(game.socket.id == players[0].playerId){
+                    game.setPlayer(players[0], players[1]);
+                }
+                else {
+                    game.setPlayer(players[1], players[0]);
+                }
+            });
         });
 
     </script>

@@ -365,6 +365,18 @@ var game = {
 
     setSocket : function (sock) {
         this.socket = sock;
+    },
+
+    setPlayer(player1, player2){
+        this.playerOne.sprite.posX = player1.posX;
+        this.playerOne.sprite.posY = player1.posY;
+        this.playerOne.originalPosition = player1.originalPosition;
+        this.playerOne.imagePath = player1.imagePath;
+
+        this.playerTwo.sprite.posX = player2.posX;
+        this.playerTwo.sprite.posY = player2.posY;
+        this.playerTwo.originalPosition = player2.originalPosition;
+        this.playerTwo.imagePath = player2.imagePath;
     }
 
 };
