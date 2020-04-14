@@ -10,11 +10,14 @@ let http = require('http').Server(app);
 let async = require('async');
 let io = require('socket.io')(http);
 let cors= require('cors');
+// --
 
+let numberOfPlayer = 0;
+let players = {};
+let ball = {};
 
 // Fichiers statiques
 app.use(express.static(__dirname));
-
 
 // Autoriser des requetes de plusieurs domaines
 app.use((req, res, next) => {
@@ -32,7 +35,6 @@ app.use((req, res, next) => {
     });
 });
 
-//app.use('/js/',express.static(config.root + '/public'));
 // ------------------------
 // ROUTE
 // ------------------------
@@ -47,69 +49,59 @@ app.get('/',(req,res)=>{
 // Quand un client se connecte, on le note dans la console
 io.sockets.on('connection', function (socket) {
 
-    let step = 1;
-    let save = false;
-    let msgTemp = "";
+    console.log("Yes, on a un joueur !");
+    io.emit('cool', "Un joueur est apparu !");
+    numberOfPlayer++;
 
-    io.emit('system', "Voulez vous sauvegardez vos informations ? ");
+    players[socket.id] = {
+        posX : 0,
+        posY : 0,
+        playerId : socket.id,
+    };
 
-    socket.emit('message', 'Vous êtes bien connecté !');
-    socket.broadcast.emit('message', 'Un autre client vient de se connecter !');
+    ball = {
+        sprite : null,
+        color : "#FFFFFF",
+        directionX: 1,
+        directionY: 1,
+        speed: 1,
+        inGame : false,
+        imagePath : "./img/ball.png",
 
-    socket.on('petit_nouveau', function(pseudo) {
-        socket.pseudo = pseudo;
+        move : function() {
+            if ( this.inGame ) {
+                this.sprite.posX += this.directionX * this.speed;
+                this.sprite.posY += this.directionY * this.speed;
+            }
+        }
+
+    };
+
+    if(numberOfPlayer == 2){
+        io.emit('cool', "2 joueurs detectés !");
+        io.emit('game', "");
+    }
+
+    socket.on('disconnect', () => {
+        io.emit('cool', "Deconnection");
+        numberOfPlayer--;
+        delete players[socket.id];
+        console.log('Socket disconnected: ');
     });
 
-    socket.on('message', function (message) {
-        io.emit('cool', message);
-        msgTemp = message;
-
-        if(step == 1 && msgTemp == "oui"){
-            step += 1;
-            msgTemp = "";
-            save = true;
-            console.log("Var save = " + save);
-            setTimeout(function(){io.emit('system', "Quel est votre nom ?");}, 400);
-        }
-
-        if(step == 1 && msgTemp == "non"){
-            step += 1;
-            msgTemp = "";
-            save = false;
-            console.log("Var save = " + save);
-            setTimeout(function(){io.emit('system', "Quel est votre nom ?");}, 400);
-        }
-
-        if(step == 2 && msgTemp !== ""){
-            socket.pseudo = msgTemp;
-            msgTemp = "";
-            setTimeout(function(){io.emit('system', "Merci "+ socket.pseudo +" ! Quel est votre SSN ?");}, 400);
-            step += 1;
-        }
-
-        if(msgTemp !== "" && step == 3){
-
-            console.log("Un message a été reçu, nous allons le traiter :")
-            postSSN(message, socket.pseudo, save).then(data => {
-                console.log("SSN valide.");
-                setTimeout(function(){io.emit('system', "Votre département : " + data.departement);}, 400);
-
-                setTimeout(function(){io.emit('system', "Votre Commune : " + data.commune)}, 500);
-
-                console.log(data);
-                console.log(save);
-                if(save == false){
-                    deleteSSN(data.idPers);
-                }
-            })
-                .catch(err => {
-                    console.log("SSN invalide.")
-                    console.log(err)
-                    setTimeout(function(){io.emit('system', "Merci d'entrer un numéro de SSN valide ! ");}, 700);
-
-                })
-        }
+    socket.on('movements', function (message) {
+        console.log(message);
+        console.log(socket.id);
+        io.emit('cool', message.posY);
+        players[socket.id].posY = message.posY;
+        io.emit('updateMove', {
+            clientId : socket.id,
+            player : players[socket.id]
+        });
     });
+
+
+
 
 });
 

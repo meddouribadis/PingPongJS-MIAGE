@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Ping Pong Miage - Badis MEDDOURI</title>
+        <title>Ping Pong MIAGE - Badis MEDDOURI</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="pong.css">
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -30,73 +30,64 @@
                     if (game.ball.inGame){
                         game.lostBall();
                     }
-                    game.ai.move();
+                    if(game.playerTwo.ai) game.ai.move();
                     game.collideBallWithPlayersAndAction();
                     requestAnimId = window.requestAnimationFrame(main); // rappel de main au prochain rafraîchissement de la page
                 };
 
                 window.onload = initialisation; // appel de la fonction initialisation au chargement de la page
-
                 // fin du code isolé
             })();
         </script>
     </head>
 
     <body>
-        <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+        <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar mb-5">
             <img src="https://www.univ-evry.fr/fileadmin/mediatheque/logo-ueve.png" class="img-fluid rounded mx-auto d-block" alt="Université d'Evry">
         </header>
 
         <div class="container-fluid">
             <div class="row flex-xl-nowrap">
-                <div class="col-12 col-md-3 col-xl-2 bd-sidebar py-md-3 pl-md-5">
+                <div class="col-12 col-md-3 col-xl-3 bd-sidebar py-md-3 pl-md-5 mb-5">
                     <button id="startGame" type="button" class="btn btn-primary btn-lg btn-block">Start !</button>
+                    <button id="disableAI" type="button" class="btn btn-primary btn-lg btn-block">Mode 2 joueurs !</button>
+                    <hr>
+                    <div class="shell">
+                        <div class="titlebar">
+                            <div class="buttons">
+                                <div class="close">
+                                    <a class="closebutton" href="#"><span><strong>x</strong></span></a>
+                                </div>
+                            </div>
+                            <p>Game console</p>
+
+                        </div>
+                        <div class="shellWin" id="shellGame">
+                            <p>Shell lancé !</p>
+                        </div>
+                    </div>
                 </div>
 
-                <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content">
+                <main class="col-12 col-md-9 col-xl-9 py-md-3 pl-md-5 bd-content mb-5">
                     <div id="divGame"></div>
                 </main>
 
-                <div class="d-none d-xl-block col-xl-2 bd-toc">
-                    <ul class="section-nav">
-                        <li class="toc-entry toc-h2"><a href="#examples">Examples</a></li>
-                        <li class="toc-entry toc-h2"><a href="#button-tags">Button tags</a></li>
-                        <li class="toc-entry toc-h2"><a href="#outline-buttons">Outline buttons</a></li>
-                        <li class="toc-entry toc-h2"><a href="#sizes">Sizes</a></li>
-                        <li class="toc-entry toc-h2"><a href="#active-state">Active state</a></li>
-                        <li class="toc-entry toc-h2"><a href="#disabled-state">Disabled state</a></li>
-                        <li class="toc-entry toc-h2"><a href="#button-plugin">Button plugin</a>
-                            <ul>
-                                <li class="toc-entry toc-h3"><a href="#toggle-states">Toggle states</a></li>
-                                <li class="toc-entry toc-h3"><a href="#checkbox-and-radio-buttons">Checkbox and radio buttons</a></li>
-                                <li class="toc-entry toc-h3"><a href="#methods">Methods</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
 
     </body>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        //var socket = io();
-    </script>
 
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
         $(document).ready(function(){
-            var hauteur = $('#m').height();
-            console.log(hauteur);
-            hauteur += 63;
-            var propertiesH = "calc(100% - "+ hauteur +"px)";
-            console.log(propertiesH);
-            $(".msgs").css("height", propertiesH);
+
         });
 
         $(function () {
             var socket = io();
+            game.setSocket(socket);
 
             $('form').submit(function(e){
                 e.preventDefault(); // prevents page reloading
@@ -104,21 +95,23 @@
                 $('#m').val('');
                 return false;
             });
+
             socket.on('cool', function(msg){
-                $('#messages').append($('<div class="user">').append($('<li>').text(msg)));
-                $('#messages').append($('<hr>'));
-                $('.msgs').scrollTop($('.msgs').prop("scrollHeight"));
-                console.log($('#m').height() + " dddd")
+                $('#shellGame').append($('<p class="user">').text(msg));
             });
 
-            socket.on('system', function(msg){
-                $('#messages').append($('<div class="system">').append($('<li>').text(msg)));
-                $('#messages').append($('<hr>'));
-                $('.msgs').scrollTop($('.msgs').prop("scrollHeight"));
+            socket.on('game', function(data){
+                game.playerTwo.ai = false;
             });
 
-            socket.on('hi', function(msg){
-                $('#messages').append($('<li>').text("bienvenue"));
+            socket.on('updateMove', function(data){
+
+                console.log("Message reçu "+  data);
+                console.log(game.socket.id);
+                if(game.socket.id != data.clientId){
+                    game.playerTwo.sprite.posY = data.player.posY;
+                }
+
             });
         });
 

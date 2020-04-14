@@ -9,8 +9,18 @@ game.control = {
 
         if ( event.keyCode == game.keycode.KEYDOWN ) {
             game.playerOne.goDown = true;
+            if(!game.playerTwo.ai){
+                game.socket.emit('movements', {
+                    posY : game.playerOne.sprite.posY,
+                });
+            }
         } else if ( event.keyCode == game.keycode.KEYUP ) {
             game.playerOne.goUp = true;
+            if(!game.playerTwo.ai){
+                game.socket.emit('movements', {
+                    posY : game.playerOne.sprite.posY,
+                });
+            }
         }
 
         if ( event.keyCode == game.keycode.SPACEBAR ) {
@@ -38,8 +48,19 @@ game.control = {
     onKeyUp : function(event) {
         if ( event.keyCode == game.keycode.KEYDOWN ) {
             game.playerOne.goDown = false;
+            if(!game.playerTwo.ai){
+                game.socket.emit('movements', {
+                    posY : game.playerOne.sprite.posY,
+                });
+            }
+            console.log(game.socket.id);
         } else if ( event.keyCode == game.keycode.KEYUP ) {
             game.playerOne.goUp = false;
+            if(!game.playerTwo.ai){
+                game.socket.emit('movements', {
+                    posY : game.playerOne.sprite.posY,
+                });
+            }
         }
     },
 

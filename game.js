@@ -6,6 +6,7 @@ var game = {
     targetResY : null,
     ratioResX : null,
     ratioResY : null,
+    socket : null,
 
     ball : {
         sprite : null,
@@ -195,7 +196,9 @@ var game = {
         if ( game.control.controlSystem == "KEYBOARD" ) {
             // keyboard control
             if ( game.playerOne.goUp ) {
+
                 game.playerOne.sprite.posY-=5;
+
             } else if ( game.playerOne.goDown ) {
                 game.playerOne.sprite.posY+=5;
             }
@@ -206,6 +209,19 @@ var game = {
             else if (game.playerOne.goDown && game.playerOne.posY < game.control.mousePointer)
                 game.playerOne.sprite.posY+=5;
         }
+    },
+
+    movePlayerTwo : function(){
+        if ( game.playerTwo.goUp ) {
+            game.playerTwo.sprite.posY-=5;
+        } else if ( game.playerTwo.goDown ) {
+            game.playerTwo.sprite.posY+=5;
+        }
+    },
+
+    updatePlayerTwo: function(player) {
+        game.playerTwo.goDown = player.goDown;
+        game.playerTwo.goUp = player.goUp;
     },
 
     initMouse : function(onMouseMoveFunction) {
@@ -346,5 +362,9 @@ var game = {
         this.scoreLayer.clear();
         this.displayScore(this.playerOne.score, this.playerTwo.score);
     },
+
+    setSocket : function (sock) {
+        this.socket = sock;
+    }
 
 };
