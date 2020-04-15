@@ -7,6 +7,7 @@ var game = {
     ratioResX : null,
     ratioResY : null,
     socket : null,
+    multiplayer : false,
 
     ball : {
         sprite : null,

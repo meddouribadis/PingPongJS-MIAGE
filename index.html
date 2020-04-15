@@ -102,6 +102,7 @@
 
             socket.on('game', function(data){
                 game.playerTwo.ai = false;
+                game.multiplayer = true;
             });
 
             socket.on('updateMove', function(data){

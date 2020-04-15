@@ -61,6 +61,7 @@ io.sockets.on('connection', function (socket) {
         originalPosition : "left",
         score : 0,
         ai : false,
+        ready : false,
         imagePath : "./img/playerOne.png",
         playerId: socket.id
     };
@@ -150,8 +151,11 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('collideBall', function (newDirections) {
-        console.log(newDirections.originalPosition);
         changeBallPath(newDirections.originalPosition, newDirections.playerID, ball);
+    });
+
+    socket.on('ready', function (message) {
+        players[socket.id].ready = true;
     });
 
     function moveBall(){
