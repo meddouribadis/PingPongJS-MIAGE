@@ -232,7 +232,12 @@ var game = {
         if ( this.ball.collide(game.playerOne) ) {
             console.log("Collide");
             this.changeBallPath(game.playerOne, game.ball);
-
+            if(!this.playerTwo.ai){
+                this.socket.emit('collideBall', {
+                    originalPosition: this.playerOne.originalPosition,
+                    playerID: game.socket.id
+                });
+            }
             let soundPromise = this.playerSound.play();
             if (soundPromise !== undefined) {
                 soundPromise.then(_ => {
@@ -298,7 +303,7 @@ var game = {
         return returnValue;
     },
 
-    changeBallPath : function(player, ball) {
+     changeBallPath : function(player, ball) {
         if (player.originalPosition == "left") {
             switch (game.ballOnPlayer(player, ball)) {
                 case "TOP":

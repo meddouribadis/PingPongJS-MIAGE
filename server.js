@@ -58,7 +58,7 @@ io.sockets.on('connection', function (socket) {
         color : "#FFFFFF",
         posX: 30,
         posY: 200,
-        originalPosition : "right",
+        originalPosition : "left",
         score : 0,
         ai : false,
         imagePath : "./img/playerOne.png",
@@ -68,7 +68,7 @@ io.sockets.on('connection', function (socket) {
     if(numberOfPlayer == 2){
         players[socket.id].posX = 650;
         players[socket.id].posY = 200;
-        players[socket.id].originalPosition = "left";
+        players[socket.id].originalPosition = "right";
         players[socket.id].imagePath = "./img/playerTwo.png";
     }
 
@@ -149,6 +149,11 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    socket.on('collideBall', function (newDirections) {
+        console.log(newDirections.originalPosition);
+        changeBallPath(newDirections.originalPosition, newDirections.playerID, ball);
+    });
+
     function moveBall(){
         if(numberOfPlayer == 2){
             ball.inGame = true;
@@ -157,6 +162,72 @@ io.sockets.on('connection', function (socket) {
         }
         io.emit("updateBall", ball);
     }
+
+    function changeBallPath(position, playerID, ball) {
+        if (position == "left") {
+            switch (ballOnPlayer(players[playerID], ball)) {
+                case "TOP":
+                    ball.directionX = 1;
+                    ball.directionY = -3;
+                    break;
+                case "MIDDLETOP":
+                    ball.directionX = 1;
+                    ball.directionY = -1;
+                    break;
+                case "CENTER":
+                    ball.directionX = 2;
+                    ball.directionY = 0;
+                    break;
+                case "MIDDLEBOTTOM":
+                    ball.directionX = 1;
+                    ball.directionY = 1;
+                    break;
+                case "BOTTOM":
+                    ball.directionX = 1;
+                    ball.directionY = 3;
+                    break;
+            }
+        } else {
+            switch (ballOnPlayer(players[playerID], ball)) {
+                case "TOP":
+                    ball.directionX = -1;
+                    ball.directionY = -3;
+                    break;
+                case "MIDDLETOP":
+                    ball.directionX = -1;
+                    ball.directionY = -1;
+                    break;
+                case "CENTER":
+                    ball.directionX = -2;
+                    ball.directionY = 0;
+                    break;
+                case "MIDDLEBOTTOM":
+                    ball.directionX = -1;
+                    ball.directionY = 1;
+                    break;
+                case "BOTTOM":
+                    ball.directionX = -1;
+                    ball.directionY = 3;
+                    break;
+            }
+        }
+    };
+
+    function ballOnPlayer(player, ball) {
+
+        var returnValue = "CENTER";
+        var playerPositions = 70/5;
+        if ( ball.posY > player.posY && ball.posY < player.posY + playerPositions ) {
+            returnValue = "TOP";
+        } else if ( ball.posY >= player.posY + playerPositions && ball.posY < player.posY + playerPositions*2 ) {
+            returnValue = "MIDDLETOP";
+        } else if ( ball.posY >= player.posY + playerPositions*2 && ball.posY < player.posY + 70 - playerPositions ) {
+            returnValue = "MIDDLEBOTTOM";
+        } else if ( ball.posY >= player.posY + 70 - playerPositions && ball.posY < player.posY + 70 ) {
+            returnValue = "BOTTOM";
+        }
+        return returnValue;
+    };
 
     setInterval(() => {
         moveBall();
