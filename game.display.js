@@ -96,6 +96,13 @@ game.display = {
         targetLayer.context2D.fillText(text, x, y);
     },
 
+    drawCenteredTextInLayer : function(targetLayer, text, font, color, x, y) {
+        targetLayer.context2D.font = font;
+        targetLayer.context2D.textAlign = 'center';
+        targetLayer.context2D.fillStyle = color;
+        targetLayer.context2D.fillText(text, x, y);
+    },
+
     drawImageInLayer : function(targetLayer, image, x, y) {
         targetLayer.context2D.drawImage(image, x, y);
     },

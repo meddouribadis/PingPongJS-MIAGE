@@ -30,7 +30,7 @@
                     if (game.ball.inGame){
                         game.lostBall();
                     }
-                    if(game.playerTwo.ai) game.ai.move();
+                    if(!game.multiplayer) game.ai.move();
                     game.collideBallWithPlayersAndAction();
                     requestAnimId = window.requestAnimationFrame(main); // rappel de main au prochain rafraîchissement de la page
                 };
@@ -101,8 +101,10 @@
             });
 
             socket.on('game', function(data){
+                console.log("multiplayer activated");
                 game.playerTwo.ai = false;
                 game.multiplayer = true;
+                game.initMutliplayer();
             });
 
             socket.on('updateMove', function(data){

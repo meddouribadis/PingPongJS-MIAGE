@@ -25,7 +25,7 @@ game.control = {
 
         if ( event.keyCode == game.keycode.SPACEBAR ) {
 
-            if(!game.partyStarted && game.gameOn){
+            if(!game.partyStarted && game.gameOn && game.multiplayer == false){
                 var sound = new Audio("./music/pkmnbattle.mp3");
                 var soundPromise = sound.play();
                 if (soundPromise !== undefined) {
@@ -36,11 +36,19 @@ game.control = {
                 game.partyStarted = true;
             }
             if ( event.keyCode == game.keycode.SPACEBAR && !game.ball.inGame && game.gameOn ) {
-                game.ball.inGame = true;
-                game.ball.sprite.posX = game.playerOne.sprite.posX + game.playerOne.sprite.width;
-                game.ball.sprite.posY = game.playerOne.sprite.posY;
-                game.ball.directionX = 1;
-                game.ball.directionY = 1;
+                if(!game.multiplayer){
+                    game.ball.inGame = true;
+                    game.ball.sprite.posX = game.playerOne.sprite.posX + game.playerOne.sprite.width;
+                    game.ball.sprite.posY = game.playerOne.sprite.posY;
+                    game.ball.directionX = 1;
+                    game.ball.directionY = 1;
+                }
+                else {
+                    console.log("Multi let's go !")
+                    game.gameReady = true;
+                    game.multiplayerInitalised = false;
+                    game.socket.emit('playerReady', "I'm ready !");
+                }
             }
         }
     },

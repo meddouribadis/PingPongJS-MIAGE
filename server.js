@@ -13,6 +13,7 @@ let cors= require('cors');
 // --
 
 let numberOfPlayer = 0;
+let numberOfPlayerReady = 0;
 let players = {};
 let ball = {};
 
@@ -130,6 +131,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('disconnect', () => {
         numberOfPlayer--;
+        numberOfPlayerReady = 0;
         delete players[socket.id];
         io.emit('reset', "reset");
         if(numberOfPlayer > 0){
@@ -154,12 +156,14 @@ io.sockets.on('connection', function (socket) {
         changeBallPath(newDirections.originalPosition, newDirections.playerID, ball);
     });
 
-    socket.on('ready', function (message) {
+    socket.on('playerReady', function (message) {
         players[socket.id].ready = true;
+        console.log("Player " + socket.id + " is ready !");
+        numberOfPlayerReady++;
     });
 
     function moveBall(){
-        if(numberOfPlayer == 2){
+        if(numberOfPlayer == 2 && numberOfPlayerReady == 2){
             ball.inGame = true;
             ball.bounce();
             ball.move();

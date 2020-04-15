@@ -3,6 +3,11 @@
     src: url('./fonts/ds_digital/DS-DIGIB.TTF');
 }
 
+@font-face {
+    font-family: 'ROCKET';
+    src: url('./fonts/rocket_vintage/rocket-vintage.ttf');
+}
+
 .bd-navbar {
     min-height: 4rem;
     background-color: #005793;
