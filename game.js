@@ -422,10 +422,13 @@ var game = {
             this.groundLayer= game.display.createLayer("terrain", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 0, "#000000", 0, 0);
             game.display.drawCenteredTextInLayer(this.groundLayer , "Bienvenue dans le mode en ligne", "50px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
             game.display.drawCenteredTextInLayer(this.groundLayer , "Appuyez sur la barre d'espace pour signaler que vous etes pret !", "20px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35);
-            if(this.gameReady) game.display.drawCenteredTextInLayer(this.groundLayer , "Vous êtes prêt, en attente du joueur 2 !", "20px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35 + 35);
             this.multiplayerInitalised = true;
         }
 
+    },
+
+    clearLayers: function () {
+        this.clearLayer(this.groundLayer);
     }
 
 };

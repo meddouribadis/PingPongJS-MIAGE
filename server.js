@@ -160,6 +160,9 @@ io.sockets.on('connection', function (socket) {
         players[socket.id].ready = true;
         console.log("Player " + socket.id + " is ready !");
         numberOfPlayerReady++;
+        if(numberOfPlayerReady == 2){
+            io.emit("allPlayersReady", "");
+        }
     });
 
     function moveBall(){

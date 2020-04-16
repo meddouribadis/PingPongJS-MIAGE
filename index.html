@@ -137,6 +137,10 @@
 
             });
 
+            socket.on('allPlayersReady', function(message){
+                game.clearLayers();
+            });
+
             socket.on('reset', function(message){
                 game.resetGame();
                 game.reinitGame();

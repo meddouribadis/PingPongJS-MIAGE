@@ -44,10 +44,9 @@ game.control = {
                     game.ball.directionY = 1;
                 }
                 else {
-                    console.log("Multi let's go !")
                     game.gameReady = true;
-                    game.multiplayerInitalised = false;
                     game.socket.emit('playerReady', "I'm ready !");
+                    game.display.drawCenteredTextInLayer(game.groundLayer , "Vous etes pret, en attente du joueur 2 !", "20px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35 + 35);
                 }
             }
         }
