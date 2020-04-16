@@ -22,7 +22,7 @@ var game = {
 
 
         move : function() {
-            if ( this.inGame ) {
+            if ( this.inGame && !game.multiplayer) {
                 this.sprite.posX += this.directionX * this.speed;
                 this.sprite.posY += this.directionY * this.speed;
             }

@@ -170,8 +170,8 @@ io.sockets.on('connection', function (socket) {
             ball.inGame = true;
             ball.bounce();
             ball.move();
+            io.emit("updateBall", ball);
         }
-        io.emit("updateBall", ball);
     }
 
     function changeBallPath(position, playerID, ball) {
