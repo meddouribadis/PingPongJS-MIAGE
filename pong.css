@@ -9,9 +9,14 @@
 }
 
 .bd-navbar {
+    height: 80px;
     min-height: 4rem;
     background-color: #005793;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.05), inset 0 -1px 0 rgba(0,0,0,.1);
+}
+
+.bd-navbar img {
+    height: 100%;
 }
 
 #divGame{
