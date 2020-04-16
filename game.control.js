@@ -55,7 +55,7 @@ game.control = {
     onKeyUp : function(event) {
         if ( event.keyCode == game.keycode.KEYDOWN ) {
             game.playerOne.goDown = false;
-            if(!game.playerTwo.ai){
+            if(!game.playerTwo.ai && game.multiplayer){
                 game.socket.emit('movements', {
                     posY : game.playerOne.sprite.posY,
                 });
@@ -63,7 +63,7 @@ game.control = {
             console.log(game.socket.id);
         } else if ( event.keyCode == game.keycode.KEYUP ) {
             game.playerOne.goUp = false;
-            if(!game.playerTwo.ai){
+            if(!game.playerTwo.ai && game.multiplayer){
                 game.socket.emit('movements', {
                     posY : game.playerOne.sprite.posY,
                 });

@@ -27,9 +27,8 @@
                     game.movePlayers();
                     game.displayPlayers();
                     game.moveBall();
-                    if (game.ball.inGame){
-                        game.lostBall();
-                    }
+                    if(game.ball.inGame && !game.multiplayer){ game.lostBall();}
+                    if(game.ball.inGame && game.multiplayer){ game.lostBallMultiplayer(); }
                     if(!game.multiplayer) game.ai.move();
                     game.collideBallWithPlayersAndAction();
                     requestAnimId = window.requestAnimationFrame(main); // rappel de main au prochain rafraîchissement de la page
@@ -139,6 +138,7 @@
 
             socket.on('allPlayersReady', function(message){
                 game.clearLayers();
+                //game.playMultiplayerSound();
             });
 
             socket.on('reset', function(message){

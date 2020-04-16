@@ -289,6 +289,16 @@ var game = {
         this.displayScore(this.playerOne.score, this.playerTwo.score);
     },
 
+    lostBallMultiplayer : function() {
+        if (this.ball.lost(this.playerOne) ) {
+            this.socket.emit('lostBall', {
+            });
+        }
+
+        this.scoreLayer.clear();
+        this.displayScore(this.playerOne.score, this.playerTwo.score);
+    },
+
     ballOnPlayer : function(player, ball) {
         var returnValue = "CENTER";
         var playerPositions = player.sprite.height/5;
@@ -429,6 +439,16 @@ var game = {
 
     clearLayers: function () {
         this.clearLayer(this.groundLayer);
+    },
+
+    playMultiplayerSound: function () {
+        var sound = new Audio("./music/next-to-you.ogg");
+        var soundPromise = sound.play();
+        if (soundPromise !== undefined) {
+            soundPromise.then(_ => {
+            }).catch(error => {
+            });
+        }
     }
 
 };

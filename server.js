@@ -75,11 +75,11 @@ io.sockets.on('connection', function (socket) {
     }
 
     ball = {
-        posX : 0,
-        posY : 0,
+        posX : 40,
+        posY : 50,
         directionX: 1,
         directionY: 1,
-        speed: 1,
+        speed: 0.8,
         inGame : false,
 
         move : function() {
@@ -154,6 +154,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('collideBall', function (newDirections) {
         changeBallPath(newDirections.originalPosition, newDirections.playerID, ball);
+        ball.speedUp();
     });
 
     socket.on('playerReady', function (message) {
@@ -163,6 +164,11 @@ io.sockets.on('connection', function (socket) {
         if(numberOfPlayerReady == 2){
             io.emit("allPlayersReady", "");
         }
+    });
+
+    socket.on('lostBall', function (data) {
+        console.log("Balle perdue pour le player : " + socket.id);
+        //resetBall();
     });
 
     function moveBall(){
@@ -240,9 +246,12 @@ io.sockets.on('connection', function (socket) {
         return returnValue;
     };
 
+    function resetBallAfterLoose(){
+
+    }
     setInterval(() => {
         moveBall();
-    }, 50);
+    }, 40);
 });
 
 
