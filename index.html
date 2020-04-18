@@ -113,6 +113,7 @@
                 console.log(game.socket.id);
                 if(game.socket.id != data.clientId){
                     game.playerTwo.sprite.posY = data.player.posY;
+                    //game.animatePlayerMovements(data.player.posY);
                 }
 
             });
@@ -155,6 +156,11 @@
                 game.resetGame();
                 game.reinitGame();
             });
+
+            socket.on('refresh', function (message) {
+                document.location.reload(false);
+            });
+
         });
 
     </script>

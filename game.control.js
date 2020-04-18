@@ -17,9 +17,9 @@ game.control = {
         } else if ( event.keyCode == game.keycode.KEYUP ) {
             game.playerOne.goUp = true;
             if(!game.playerTwo.ai){
-                game.socket.emit('movements', {
+                /*game.socket.emit('movements', {
                     posY : game.playerOne.sprite.posY,
-                });
+                });*/
             }
         }
 

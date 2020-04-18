@@ -9,6 +9,7 @@ var game = {
     socket : null,
     multiplayer : false,
     gameReady : false,
+    gameInitialised : false,
     multiplayerInitalised: false,
 
     ball : {
@@ -142,6 +143,8 @@ var game = {
 
         game.ai.setPlayerAndBall(this.playerTwo, this.ball);
         game.speedUpBall();
+        gameInitialised = true;
+        console.log("EOInitialisation;")
     },
 
     initKeyboard : function(onKeyDownFunction, onKeyUpFunction) {
@@ -430,6 +433,9 @@ var game = {
     },
 
     initMutliplayer : function(){
+        while(!gameInitialised){
+            sleep(1000).then(() => { console.log("Let's Go !"); });
+        }
         if(!this.multiplayerInitalised){
             this.clearLayer(this.playersBallLayer);
             this.clearLayer(this.groundLayer);
@@ -453,6 +459,12 @@ var game = {
             soundPromise.then(_ => {
             }).catch(error => {
             });
+        }
+    },
+
+    animatePlayerMovements : function (posY) {
+        for (i = game.playerTwo.sprite.posY; i >= posY; i++){
+            game.playerTwo.sprite.posY++;
         }
     }
 
