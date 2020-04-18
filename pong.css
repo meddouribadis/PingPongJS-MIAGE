@@ -8,6 +8,10 @@
     src: url('./fonts/rocket_vintage/rocket-vintage.ttf');
 }
 
+body {
+    background-color: #212529;
+}
+
 .bd-navbar {
     font-family: ROCKET;
     height: 80px;
@@ -111,5 +115,5 @@
     color: white;
     padding: 10px;
     max-height: 240px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
