@@ -433,7 +433,7 @@ var game = {
     },
 
     initMutliplayer : function(){
-        while(!gameInitialised){
+        while(gameInitialised == undefined || !gameInitialised){
             sleep(1000).then(() => { console.log("Let's Go !"); });
         }
         if(!this.multiplayerInitalised){
