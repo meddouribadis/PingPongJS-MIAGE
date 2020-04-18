@@ -120,10 +120,10 @@ var game = {
         game.display.drawRectangleInLayer(this.groundLayer, conf.NETWIDTH, conf.GROUNDLAYERHEIGHT, this.netColor, conf.GROUNDLAYERWIDTH/2 - conf.NETWIDTH/2, 0);
 
         this.scoreLayer = game.display.createLayer("score", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 1, undefined, 0, 0);
-        game.display.drawTextInLayer(this.scoreLayer , "SCORE", "10px Arial", "#FF0000", 10, 10);
+        game.display.drawTextInLayer(this.scoreLayer , "SCORE", "10px ROCKET", "#FF0000", 10, 10);
 
         this.playersBallLayer = game.display.createLayer("joueursetballe", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 2, undefined, 0, 0);
-        game.display.drawTextInLayer(this.playersBallLayer, "JOUEURSETBALLE", "10px Arial", "#FF0000", 100, 100);
+        game.display.drawTextInLayer(this.playersBallLayer, "JOUEURSETBALLE", "10px DS-DIGIB", "#FF0000", 100, 100);
 
         this.displayScore(0,0);
 
@@ -395,6 +395,11 @@ var game = {
         this.playerTwo.sprite.posY = player2.posY;
         this.playerTwo.originalPosition = player2.originalPosition;
         this.playerTwo.imagePath = player2.imagePath;
+    },
+
+    updateScore(player1, player2){
+        this.playerOne.score = player1.score;
+        this.playerTwo.score = player2.score;
     },
 
     resetGame(){

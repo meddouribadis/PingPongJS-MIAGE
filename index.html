@@ -63,6 +63,7 @@
                         </div>
                         <div class="shellWin" id="shellGame">
                             <p>Shell lancé !</p>
+                            <div style="font-family: ROCKET;">.</div>
                         </div>
                     </div>
                 </div>
@@ -122,6 +123,15 @@
                 }
                 else {
                     game.setPlayer(players[1], players[0]);
+                }
+            });
+
+            socket.on('updateScore', function(players){
+                if(game.socket.id == players[0].playerId){
+                    game.updateScore(players[0], players[1]);
+                }
+                else {
+                    game.updateScore(players[1], players[0]);
                 }
             });
 

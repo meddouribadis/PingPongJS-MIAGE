@@ -168,7 +168,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('lostBall', function (data) {
         console.log("Balle perdue pour le player : " + socket.id);
-        //resetBall();
+        resetBallAfterLoose(socket.id);
     });
 
     function moveBall(){
@@ -246,9 +246,37 @@ io.sockets.on('connection', function (socket) {
         return returnValue;
     };
 
-    function resetBallAfterLoose(){
+    function resetBallAfterLoose(idOfLooser){
 
-    }
+        ball.speed = 0.8;
+
+        if(players[idOfLooser].originalPosition == "left"){
+            ball.posX = 40;
+            ball.posY = 200;
+            ball.directionY = 1;
+            ball.directionX = 1;
+        }
+        else if(players[idOfLooser].originalPosition == "right"){
+            ball.posX = 620;
+            ball.posY = 200;
+            ball.directionX = -1;
+            ball.directionY = 1;
+        }
+
+        updateAndSendScore(idOfLooser);
+        io.emit("updateBall", ball);
+        io.emit("updateScore", Object.values(players));
+    };
+
+    function updateAndSendScore(idOfLooser){
+        for (var key in players) {
+            if (players.hasOwnProperty(key) && key != idOfLooser) {
+                players[key].score =+ 1;
+            }
+        }
+
+    };
+
     setInterval(() => {
         moveBall();
     }, 40);
