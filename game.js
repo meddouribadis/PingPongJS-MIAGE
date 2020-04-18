@@ -11,6 +11,7 @@ var game = {
     gameReady : false,
     gameInitialised : false,
     multiplayerInitalised: false,
+    gamePaused: false,
 
     ball : {
         sprite : null,
@@ -110,10 +111,14 @@ var game = {
     divGame : null,
     gameOn : false,
     startGameButton : null,
+    twoPlayersButton : null,
+    fourPlayersButton : null,
 
     init : function() {
         this.divGame = document.getElementById("divGame");
         this.startGameButton = document.getElementById("startGame");
+        this.twoPlayersButton = document.getElementById("disableAI");
+        this.fourPlayersButton = document.getElementById("fourPlayers");
         this.initScreenRes();
         //this.resizeDisplayData(conf,this.ratioResX,this.ratioResY);
 
@@ -137,6 +142,7 @@ var game = {
 
         this.initKeyboard(game.control.onKeyDown, game.control.onKeyUp);
         this.initStartGameButton();
+        this.initTwoPlayersButton();
 
         this.wallSound = new Audio("./sound/pingMur.ogg");
         this.playerSound = new Audio("./sound/pingRaquette.ogg");
@@ -154,6 +160,10 @@ var game = {
 
     initStartGameButton : function() {
         this.startGameButton.onclick = game.control.onStartGameClickButton;
+    },
+
+    initTwoPlayersButton : function() {
+        this.twoPlayersButton.onclick = game.control.onTwoPlayersClickButton;
     },
 
     initScreenRes : function() {
@@ -433,7 +443,7 @@ var game = {
     },
 
     initMutliplayer : function(){
-        while(gameInitialised == undefined || !gameInitialised){
+        while(gameInitialised === null || gameInitialised == undefined || !gameInitialised){
             sleep(1000).then(() => { console.log("Let's Go !"); });
         }
         if(!this.multiplayerInitalised){

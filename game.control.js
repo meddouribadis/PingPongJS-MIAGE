@@ -92,11 +92,19 @@ game.control = {
     },
 
     onStartGameClickButton : function() {
-        console.log("Clicked")
+        console.log("Clicked");
         if ( !game.gameOn ) {
             game.reinitGame();
             game.gameOn = true;
         }
+    },
+
+    onTwoPlayersClickButton : function() {
+        console.log("Two Players");
+        console.log("multiplayer activated");
+        game.playerTwo.ai = false;
+        game.multiplayer = true;
+        game.initMutliplayer();
     }
 
 

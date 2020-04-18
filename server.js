@@ -168,6 +168,7 @@ io.sockets.on('connection', function (socket) {
         console.log("Player " + socket.id + " is ready !");
         numberOfPlayerReady++;
         if(numberOfPlayerReady == 2){
+            ball.speed = 0.8;
             io.emit("allPlayersReady", "");
         }
     });
