@@ -124,12 +124,15 @@ io.sockets.on('connection', function (socket) {
     };
 
     if(numberOfPlayer == 2){
+        console.log("2 Joueurs");
+        console.log(players);
         io.emit('cool', "2 joueurs detectés !");
         io.emit('game', "");
         io.emit('updatePlayers', Object.values(players));
     }
 
     socket.on('disconnect', () => {
+        ball.speed = 0.8;
         numberOfPlayer--;
         numberOfPlayerReady = 0;
         delete players[socket.id];
@@ -140,6 +143,9 @@ io.sockets.on('connection', function (socket) {
             players[idTemp].posY = 200;
             players[idTemp].originalPosition = "right";
             players[idTemp].imagePath = "./img/playerOne.png";
+        }
+        if(numberOfPlayer < 2 && numberOfPlayer > 0){
+            io.emit('refresh', "refresh");
         }
     });
 
@@ -271,15 +277,33 @@ io.sockets.on('connection', function (socket) {
     function updateAndSendScore(idOfLooser){
         for (var key in players) {
             if (players.hasOwnProperty(key) && key != idOfLooser) {
-                players[key].score =+ 1;
+                players[key].score += 1;
+                console.log("Player Score : " + players[key].score);
             }
         }
 
     };
 
+    function checkSockets(){
+        let compteur = 0;
+        for (var key in players) {
+            if (players.hasOwnProperty(key)) {
+                compteur++;
+            }
+        }
+
+        if(compteur !== numberOfPlayer){
+            numberOfPlayer = compteur;
+        }
+    }
+
     setInterval(() => {
         moveBall();
     }, 40);
+
+    setInterval(() => {
+        checkSockets();
+    }, 1000);
 });
 
 
