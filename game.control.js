@@ -37,6 +37,7 @@ game.control = {
             }
             if ( event.keyCode == game.keycode.SPACEBAR && !game.ball.inGame && game.gameOn ) {
                 if(!game.multiplayer){
+                    game.clearLayers();
                     game.ball.inGame = true;
                     game.ball.sprite.posX = game.playerOne.sprite.posX + game.playerOne.sprite.width;
                     game.ball.sprite.posY = game.playerOne.sprite.posY;

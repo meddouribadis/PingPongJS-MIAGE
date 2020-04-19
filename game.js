@@ -131,6 +131,9 @@ var game = {
         this.playersBallLayer = game.display.createLayer("joueursetballe", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 2, undefined, 0, 0);
         game.display.drawTextInLayer(this.playersBallLayer, "JOUEURSETBALLE", "10px DS-DIGIB", "#FF0000", 100, 100);
 
+        game.display.drawCenteredTextInLayer(this.groundLayer , "Bienvenue dans le jeu PingPong", "50px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
+        game.display.drawCenteredTextInLayer(this.groundLayer , "Appuyez sur la barre d'espace pour demmarer le jeu !", "20px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35);
+
         this.displayScore(0,0);
 
         this.ball.sprite = game.display.createSprite(conf.BALLWIDTH,conf.BALLHEIGHT,conf.BALLPOSX,conf.BALLPOSY,"./img/ball.png");
@@ -443,8 +446,10 @@ var game = {
     },
 
     initMutliplayer : function(){
-        while(gameInitialised === null || gameInitialised == undefined || !gameInitialised){
-            sleep(1000).then(() => { console.log("Let's Go !"); });
+        while(gameInitialised == null || gameInitialised == undefined){
+            while(!gameInitialised){
+                sleep(1000).then(() => { console.log("Let's Go !"); });
+            }
         }
         if(!this.multiplayerInitalised){
             this.clearLayer(this.playersBallLayer);
@@ -460,6 +465,7 @@ var game = {
 
     clearLayers: function () {
         this.clearLayer(this.groundLayer);
+        game.display.drawRectangleInLayer(this.groundLayer, conf.NETWIDTH, conf.GROUNDLAYERHEIGHT, this.netColor, conf.GROUNDLAYERWIDTH/2 - conf.NETWIDTH/2, 0);
     },
 
     playMultiplayerSound: function () {
