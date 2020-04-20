@@ -42,6 +42,7 @@ var game = {
             }
             if ( this.sprite.posY > conf.GROUNDLAYERHEIGHT || this.sprite.posY < 0  ) {
                 this.directionY = -this.directionY;
+
                 var soundPromise = soundToPlay.play();
                 if (soundPromise !== undefined) {
                     soundPromise.then(_ => {
@@ -51,6 +52,7 @@ var game = {
                         // Show a "Play" button so that user can start playback.
                     });
                 }
+
             }
         },
 
@@ -390,6 +392,8 @@ var game = {
 
     endOfTheParty: function(win) {
 
+
+        this.wallSound = null;
         this.gameMusic.pause();
         this.gameMusic.currentTime = 0;
 
@@ -403,10 +407,13 @@ var game = {
         }
 
         this.clearLayer(this.groundLayer);
-        this.clearLayer(this.scoreLayer);
+        this.clearLayer(this.scoreLayer)
         this.clearLayer(this.playersBallLayer);
+        let buttonLayer = game.display.createClickableLayer("restartButton", 150, 50, this.divGame, 5, "#000000", conf.GROUNDLAYERWIDTH/2 - (150/2), 230, () => { document.location.reload(false); });
+        game.display.drawCenteredTextInLayer(buttonLayer, "Restart", "30px ZELDA", "#00ff55", 150/2, 50/2);
         if(!win) game.display.drawCenteredTextInLayer(this.groundLayer , "YOU LOOSE", "50px ZELDA", "#ff0000", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
         else if(win) game.display.drawCenteredTextInLayer(this.groundLayer , "YOU WIN", "50px ZELDA", "#00ff55", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
+
     },
 
     reinitGame : function() {
