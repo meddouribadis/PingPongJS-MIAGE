@@ -113,8 +113,8 @@
                 console.log("Message reçu "+  data);
                 console.log(game.socket.id);
                 if(game.socket.id != data.clientId){
-                    game.playerTwo.sprite.posY = data.player.posY;
-                    //game.animatePlayerMovements(data.player.posY);
+                    //game.playerTwo.sprite.posY = data.player.posY;
+                    game.animatePlayerMovements(data.player.posY);
                 }
 
             });

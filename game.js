@@ -225,9 +225,21 @@ var game = {
             if ( game.playerOne.goUp ) {
 
                 game.playerOne.sprite.posY-=5;
+                if(!game.playerTwo.ai){
+                    game.socket.emit('movements', {
+                        posY : game.playerOne.sprite.posY,
+                    });
+                }
 
             } else if ( game.playerOne.goDown ) {
+
                 game.playerOne.sprite.posY+=5;
+                if(!game.playerTwo.ai){
+                    game.socket.emit('movements', {
+                        posY : game.playerOne.sprite.posY,
+                    });
+                }
+
             }
         } else if ( game.control.controlSystem == "MOUSE" ) {
             if (game.playerOne.goUp && game.playerOne.posY > game.control.mousePointer)
@@ -521,6 +533,14 @@ var game = {
         }
     },
 
+    animatePlayerMovements: function (nextPosY) {
+        while(game.playerTwo.sprite.posY < nextPosY){
+            game.playerTwo.sprite.posY++;
+        }
 
+        while(game.playerTwo.sprite.posY > nextPosY){
+            game.playerTwo.sprite.posY--;
+        }
+    },
 
 };
