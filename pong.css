@@ -8,6 +8,11 @@
     src: url('./fonts/rocket_vintage/rocket-vintage.ttf');
 }
 
+@font-face {
+    font-family: 'ZELDA';
+    src: url('./fonts/zelda/zelda.otf');
+}
+
 body {
     background-color: #212529;
 }

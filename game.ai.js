@@ -12,6 +12,9 @@ game.ai = {
             if ( this.player.originalPosition == "right" ) {
                 // follow
                 this.followBall();
+                this.followBall();
+                this.followBall();
+                this.followBall();
             }
             if ( this.player.originalPosition == "left" ) {
                 // center
@@ -24,6 +27,9 @@ game.ai = {
             }
             if ( this.player.originalPosition == "left" ) {
                 // follow
+                this.followBall();
+                this.followBall();
+                this.followBall();
                 this.followBall();
             }
         }

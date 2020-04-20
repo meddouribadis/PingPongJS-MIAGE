@@ -17,16 +17,16 @@ game.control = {
         } else if ( event.keyCode == game.keycode.KEYUP ) {
             game.playerOne.goUp = true;
             if(!game.playerTwo.ai){
-                /*game.socket.emit('movements', {
+                game.socket.emit('movements', {
                     posY : game.playerOne.sprite.posY,
-                });*/
+                });
             }
         }
 
         if ( event.keyCode == game.keycode.SPACEBAR ) {
 
             if(!game.partyStarted && game.gameOn && game.multiplayer == false){
-                var sound = new Audio("./music/pkmnbattle.mp3");
+                var sound = game.gameMusic;
                 var soundPromise = sound.play();
                 if (soundPromise !== undefined) {
                     soundPromise.then(_ => {
@@ -35,6 +35,11 @@ game.control = {
                 }
                 game.partyStarted = true;
             }
+
+            if( event.keyCode == game.keycode.SPACEBAR && game.ball.inGame && game.gameOn && game.ball.ballOnPurpose){
+                game.ball.ballOnPurpose = false;
+            }
+
             if ( event.keyCode == game.keycode.SPACEBAR && !game.ball.inGame && game.gameOn ) {
                 if(!game.multiplayer){
                     game.clearLayers();
@@ -50,6 +55,7 @@ game.control = {
                     game.display.drawCenteredTextInLayer(game.groundLayer , "Vous etes pret, en attente du joueur 2 !", "20px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35 + 35);
                 }
             }
+
         }
     },
 

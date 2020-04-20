@@ -12,6 +12,7 @@ var game = {
     gameInitialised : false,
     multiplayerInitalised: false,
     gamePaused: false,
+    gameMusic: null,
 
     ball : {
         sprite : null,
@@ -21,12 +22,16 @@ var game = {
         speed: 1,
         inGame : false,
         imagePath : "./img/ball.png",
-
+        ballOnPurpose : true,
 
         move : function() {
-            if ( this.inGame && !game.multiplayer) {
+            if ( this.inGame && !game.multiplayer && !this.ballOnPurpose) {
                 this.sprite.posX += this.directionX * this.speed;
                 this.sprite.posY += this.directionY * this.speed;
+            }
+            else if(this.ballOnPurpose && !game.multiplayer){
+                this.sprite.posX = game.playerOne.sprite.posX + game.playerOne.sprite.width + 5;
+                this.sprite.posY = game.playerOne.sprite.posY + (game.playerOne.sprite.height/2);
             }
         },
 
@@ -69,7 +74,7 @@ var game = {
         },
 
         speedUp: function() {
-            this.speed = this.speed + .1;
+            this.speed = this.speed + .5;
         },
 
     },
@@ -126,13 +131,13 @@ var game = {
         game.display.drawRectangleInLayer(this.groundLayer, conf.NETWIDTH, conf.GROUNDLAYERHEIGHT, this.netColor, conf.GROUNDLAYERWIDTH/2 - conf.NETWIDTH/2, 0);
 
         this.scoreLayer = game.display.createLayer("score", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 1, undefined, 0, 0);
-        game.display.drawTextInLayer(this.scoreLayer , "SCORE", "10px ROCKET", "#FF0000", 10, 10);
+        game.display.drawTextInLayer(this.scoreLayer , "SCORE", "10px ZELDA", "#FF0000", 10, 10);
 
         this.playersBallLayer = game.display.createLayer("joueursetballe", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 2, undefined, 0, 0);
         game.display.drawTextInLayer(this.playersBallLayer, "JOUEURSETBALLE", "10px DS-DIGIB", "#FF0000", 100, 100);
 
-        game.display.drawCenteredTextInLayer(this.groundLayer , "Bienvenue dans le jeu PingPong", "50px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
-        game.display.drawCenteredTextInLayer(this.groundLayer , "Appuyez sur la barre d'espace pour demmarer le jeu !", "20px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35);
+        game.display.drawCenteredTextInLayer(this.groundLayer , "Bienvenue dans le jeu PingPong", "50px ZELDA", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
+        game.display.drawCenteredTextInLayer(this.groundLayer , "appuyez sur la barre d'espace pour demmarer le jeu !", "20px ZELDA", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35);
 
         this.displayScore(0,0);
 
@@ -149,9 +154,11 @@ var game = {
 
         this.wallSound = new Audio("./sound/pingMur.ogg");
         this.playerSound = new Audio("./sound/pingRaquette.ogg");
+        this.gameMusic = new Audio("./music/next-to-you.ogg");
+        this.gameMusic.volume = 0.3;
 
         game.ai.setPlayerAndBall(this.playerTwo, this.ball);
-        game.speedUpBall();
+        //game.speedUpBall();
         gameInitialised = true;
         console.log("EOInitialisation;")
     },
@@ -213,7 +220,6 @@ var game = {
 
     movePlayers : function() {
         if ( game.control.controlSystem == "KEYBOARD" ) {
-            // keyboard control
             if ( game.playerOne.goUp ) {
 
                 game.playerOne.sprite.posY-=5;
@@ -222,25 +228,11 @@ var game = {
                 game.playerOne.sprite.posY+=5;
             }
         } else if ( game.control.controlSystem == "MOUSE" ) {
-            // mouse control
             if (game.playerOne.goUp && game.playerOne.posY > game.control.mousePointer)
                 game.playerOne.sprite.posY-=5;
             else if (game.playerOne.goDown && game.playerOne.posY < game.control.mousePointer)
                 game.playerOne.sprite.posY+=5;
         }
-    },
-
-    movePlayerTwo : function(){
-        if ( game.playerTwo.goUp ) {
-            game.playerTwo.sprite.posY-=5;
-        } else if ( game.playerTwo.goDown ) {
-            game.playerTwo.sprite.posY+=5;
-        }
-    },
-
-    updatePlayerTwo: function(player) {
-        game.playerTwo.goDown = player.goDown;
-        game.playerTwo.goUp = player.goUp;
     },
 
     initMouse : function(onMouseMoveFunction) {
@@ -273,25 +265,33 @@ var game = {
                 }).catch(error => {
                 });
             }
+            if(!this.multiplayer){
+                console.log("Speed : " + this.ball.speed);
+                this.ball.speedUp();
+            }
         }
     },
 
     lostBall : function() {
         if ( this.ball.lost(this.playerOne) ) {
             this.playerTwo.score++;
-            if ( this.playerTwo.score > 9 ) {
+            if ( this.playerTwo.score > 0 ) {
                 this.gameOn = false;
+                this.ball.ballOnPurpose = true;
+                this.endOfTheParty(false);
             } else {
-                this.ball.inGame = false;
-
+                //this.ball.inGame = false;
+                this.ball.ballOnPurpose = true;
                 if ( this.playerOne.ai ) {
                     setTimeout(game.ai.startBall(), 3000);
                 }
             }
         } else if ( this.ball.lost(this.playerTwo) ) {
             this.playerOne.score++;
-            if ( this.playerOne.score > 9 ) {
+            if ( this.playerOne.score > 1 ) {
                 this.gameOn = false;
+                this.ball.ballOnPurpose = true;
+                this.endOfTheParty(true);
             } else {
                 this.ball.inGame = false;
 
@@ -388,6 +388,27 @@ var game = {
         }, 5000);
     },
 
+    endOfTheParty: function(win) {
+
+        this.gameMusic.pause();
+        this.gameMusic.currentTime = 0;
+
+        if(win) var sound = new Audio("./sound/victory.mp3");
+        else var sound = new Audio("./sound/gameOver.mp3");
+        var soundPromise = sound.play();
+        if (soundPromise !== undefined) {
+            soundPromise.then(_ => {
+            }).catch(error => {
+            });
+        }
+
+        this.clearLayer(this.groundLayer);
+        this.clearLayer(this.scoreLayer);
+        this.clearLayer(this.playersBallLayer);
+        if(!win) game.display.drawCenteredTextInLayer(this.groundLayer , "YOU LOOSE", "50px ZELDA", "#ff0000", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
+        else if(win) game.display.drawCenteredTextInLayer(this.groundLayer , "YOU WIN", "50px ZELDA", "#00ff55", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
+    },
+
     reinitGame : function() {
         this.ball.inGame = false;
         this.ball.speed = 1;
@@ -456,8 +477,8 @@ var game = {
             this.clearLayer(this.groundLayer);
             this.clearLayer(this.scoreLayer);
             this.groundLayer= game.display.createLayer("terrain", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 0, "#000000", 0, 0);
-            game.display.drawCenteredTextInLayer(this.groundLayer , "Bienvenue dans le mode en ligne", "50px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
-            game.display.drawCenteredTextInLayer(this.groundLayer , "Appuyez sur la barre d'espace pour signaler que vous etes pret !", "20px ROCKET", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35);
+            game.display.drawCenteredTextInLayer(this.groundLayer , "Bienvenue dans le mode en ligne", "50px ZELDA", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
+            game.display.drawCenteredTextInLayer(this.groundLayer , "Appuyez sur la barre d'espace pour signaler que vous etes pret !", "20px ZELDA", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35);
             this.multiplayerInitalised = true;
         }
 
@@ -478,10 +499,6 @@ var game = {
         }
     },
 
-    animatePlayerMovements : function (posY) {
-        for (i = game.playerTwo.sprite.posY; i >= posY; i++){
-            game.playerTwo.sprite.posY++;
-        }
-    }
+
 
 };
