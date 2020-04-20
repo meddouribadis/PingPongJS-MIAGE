@@ -31,6 +31,10 @@ game.control = {
                 game.ball.ballOnPurpose = false;
             }
 
+            if( event.keyCode == game.keycode.SPACEBAR && game.ball.inGame && game.gameOn && game.gameReady && game.multiplayer){
+                game.socket.emit('ballOnPurpose', "I'm ready !");
+            }
+
             if ( event.keyCode == game.keycode.SPACEBAR && !game.ball.inGame && game.gameOn ) {
                 if(!game.multiplayer){
                     game.clearLayers();

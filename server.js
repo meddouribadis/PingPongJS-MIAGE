@@ -85,16 +85,20 @@ io.sockets.on('connection', function (socket) {
         directionY: 1,
         speed: 0.8,
         inGame : false,
-        ballOnPurpose : false,
+        ballOnPurpose : 1,
 
         move : function() {
-            if ( this.inGame && !this.ballOnPurpose) {
+            if ( this.inGame && this.ballOnPurpose == 0) {
                 this.posX += this.directionX * this.speed;
                 this.posY += this.directionY * this.speed;
             }
-            else if(this.ballOnPurpose){
-                this.sprite.posX = players[playerIndex[1]].sprite.posX + players[playerIndex[1]].sprite.width + 5;
-                this.sprite.posY = players[playerIndex[1]].sprite.posY + (players[playerIndex[1]].sprite.height/2);
+            else if(this.ballOnPurpose == 1){
+                this.posX = players[playerIndex[1]].posX + 15;
+                this.posY = players[playerIndex[1]].posY + 20;
+            }
+            else if(this.ballOnPurpose == 2){
+                this.posX = players[playerIndex[2]].posX - 15;
+                this.posY = players[playerIndex[2]].posY + 20;
             }
         },
 
@@ -154,6 +158,7 @@ io.sockets.on('connection', function (socket) {
             players[idTemp].imagePath = "./img/playerOne.png";
         }
         if(numberOfPlayer < 2 && numberOfPlayer > 0){
+            playerIndex = [];
             io.emit('refresh', "refresh");
         }
     });
@@ -186,6 +191,12 @@ io.sockets.on('connection', function (socket) {
     socket.on('lostBall', function (data) {
         console.log("Balle perdue pour le player : " + socket.id);
         resetBallAfterLoose(socket.id);
+    });
+
+    socket.on('ballOnPurpose', function (data) {
+        if(socket.id == playerIndex[ball.ballOnPurpose]){
+            ball.ballOnPurpose = 0;
+        }
     });
 
     function moveBall(){
@@ -272,12 +283,14 @@ io.sockets.on('connection', function (socket) {
             ball.posY = 200;
             ball.directionY = 1;
             ball.directionX = 1;
+            ball.ballOnPurpose = 1;
         }
         else if(players[idOfLooser].originalPosition == "right"){
             ball.posX = 620;
             ball.posY = 200;
             ball.directionX = -1;
             ball.directionY = 1;
+            ball.ballOnPurpose = 2;
         }
 
         updateAndSendScore(idOfLooser);
@@ -314,7 +327,7 @@ io.sockets.on('connection', function (socket) {
 
     setInterval(() => {
         checkSockets();
-    }, 1000);
+    }, 500);
 });
 
 
