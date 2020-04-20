@@ -111,7 +111,7 @@ game.control = {
         console.log("multiplayer activated");
         game.playerTwo.ai = false;
         game.multiplayer = true;
-        game.initMutliplayer();
+        game.initMultiplayer();
     }
 
 

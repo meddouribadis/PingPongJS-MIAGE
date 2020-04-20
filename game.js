@@ -161,7 +161,7 @@ var game = {
 
         game.ai.setPlayerAndBall(this.playerTwo, this.ball);
         //game.speedUpBall();
-        gameInitialised = true;
+        this.gameInitialised = true;
         console.log("EOInitialisation;")
     },
 
@@ -473,21 +473,36 @@ var game = {
         this.playerTwo.sprite = game.display.createSprite(conf.PLAYERTWOWIDTH,conf.PLAYERTWOHEIGHT,conf.PLAYERTWOPOSX,conf.PLAYERTWOPOSY,"./img/playerTwo.png");
     },
 
-    initMutliplayer : function(){
-        while(gameInitialised == null || gameInitialised == undefined){
-            while(!gameInitialised){
-                sleep(1000).then(() => { console.log("Let's Go !"); });
+    initMultiplayer : function(){
+        console.log("Entering the initMultiplayer")
+        if(this.gameInitialised === undefined || this.gameInitialised === false){
+            setTimeout(this.checkVariable, 1000);
+        }
+        else{
+            if(!this.multiplayerInitalised){
+                this.clearLayer(this.playersBallLayer);
+                this.clearLayer(this.groundLayer);
+                this.clearLayer(this.scoreLayer);
+                this.groundLayer= game.display.createLayer("terrain", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 0, "#000000", 0, 0);
+                game.display.drawCenteredTextInLayer(this.groundLayer , "Bienvenue dans le mode en ligne", "50px ZELDA", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
+                game.display.drawCenteredTextInLayer(this.groundLayer , "Appuyez sur la barre d'espace pour signaler que vous etes pret !", "20px ZELDA", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35);
+                this.multiplayerInitalised = true;
             }
         }
-        if(!this.multiplayerInitalised){
-            this.clearLayer(this.playersBallLayer);
-            this.clearLayer(this.groundLayer);
-            this.clearLayer(this.scoreLayer);
-            this.groundLayer= game.display.createLayer("terrain", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 0, "#000000", 0, 0);
-            game.display.drawCenteredTextInLayer(this.groundLayer , "Bienvenue dans le mode en ligne", "50px ZELDA", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2);
-            game.display.drawCenteredTextInLayer(this.groundLayer , "Appuyez sur la barre d'espace pour signaler que vous etes pret !", "20px ZELDA", "#ffffff", conf.GROUNDLAYERWIDTH/2, conf.GROUNDLAYERHEIGHT/2 + 35);
-            this.multiplayerInitalised = true;
+
+    },
+
+    checkVariable : function() {
+
+        if (this.gameInitialised === undefined) {
+            console.log("Waiting game initialisation;");
         }
+
+        if (this.gameInitialised === false) {
+            console.log("Waiting game initialisation;");
+        }
+
+        game.initMultiplayer();
 
     },
 

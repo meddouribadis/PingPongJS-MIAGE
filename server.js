@@ -16,6 +16,7 @@ let numberOfPlayer = 0;
 let numberOfPlayerReady = 0;
 let players = {};
 let ball = {};
+let playerIndex = [];
 
 // Fichiers statiques
 app.use(express.static(__dirname));
@@ -53,6 +54,9 @@ io.sockets.on('connection', function (socket) {
     console.log("Yes, on a un joueur !");
     io.emit('cool', "Un joueur est apparu !");
     numberOfPlayer++;
+    playerIndex[numberOfPlayer] = socket.id;
+
+    console.log("Index " + playerIndex);
 
     players[socket.id] = {
         sprite : null,
@@ -81,11 +85,16 @@ io.sockets.on('connection', function (socket) {
         directionY: 1,
         speed: 0.8,
         inGame : false,
+        ballOnPurpose : false,
 
         move : function() {
-            if ( this.inGame ) {
+            if ( this.inGame && !this.ballOnPurpose) {
                 this.posX += this.directionX * this.speed;
                 this.posY += this.directionY * this.speed;
+            }
+            else if(this.ballOnPurpose){
+                this.sprite.posX = players[playerIndex[1]].sprite.posX + players[playerIndex[1]].sprite.width + 5;
+                this.sprite.posY = players[playerIndex[1]].sprite.posY + (players[playerIndex[1]].sprite.height/2);
             }
         },
 
@@ -150,6 +159,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('movements', function (message) {
+        console.log("Speed : " + ball.speed);
         io.emit('cool', message.posY);
         players[socket.id].posY = message.posY;
         io.emit('updateMove', {
