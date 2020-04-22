@@ -31,6 +31,7 @@ body {
 
 #divGame{
     position: relative;
+    height: 500px;
 }
 
 .window {
@@ -122,3 +123,10 @@ body {
     max-height: 240px;
     overflow-y: scroll;
 }
+
+/*@media (min-width: 576px){
+    .dataGame {
+        flex-direction: column-reverse;
+    }
+}
+*/

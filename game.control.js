@@ -8,9 +8,11 @@ game.control = {
         game.control.controlSystem = "KEYBOARD";
 
         if ( event.keyCode == game.keycode.KEYDOWN ) {
+            event.preventDefault();
             game.playerOne.goDown = true;
 
         } else if ( event.keyCode == game.keycode.KEYUP ) {
+            event.preventDefault();
             game.playerOne.goUp = true;
         }
 

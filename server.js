@@ -44,6 +44,9 @@ app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname,'index.html'))
 });
 
+app.get('/fourPlayers',(req,res)=>{
+    res.sendFile(path.join(__dirname,'fourPlayers.html'))
+});
 // ------------------------
 //
 // ------------------------
