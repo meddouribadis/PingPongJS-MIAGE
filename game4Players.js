@@ -90,6 +90,7 @@ var game = {
         score : 0,
         ai : false,
         imagePath : "./img/playerOne.png",
+        playerId : null
     },
 
     playerOneBis : {
@@ -101,6 +102,7 @@ var game = {
         score : 0,
         ai : false,
         imagePath : "./img/playerOne.png",
+        playerId : null
     },
 
     playerTwo : {
@@ -112,6 +114,7 @@ var game = {
         score: 0,
         ai : true,
         imagePath : "./img/playerTwo.png",
+        playerId : null
     },
 
     playerTwoBis : {
@@ -123,6 +126,7 @@ var game = {
         score: 0,
         ai : true,
         imagePath : "./img/playerTwo.png",
+        playerId : null
     },
 
     groundWidth : 700,
@@ -149,7 +153,8 @@ var game = {
         this.twoPlayersButton = document.getElementById("disableAI");
         this.fourPlayersButton = document.getElementById("fourPlayers");
         this.initScreenRes();
-        //this.resizeDisplayData(conf,this.ratioResX,this.ratioResY);
+
+        game.socket.emit('fourPlayers', "I'm ready !");
 
         this.groundLayer= game.display.createLayer("terrain", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 0, "#000000", 0, 0);
         game.display.drawRectangleInLayer(this.groundLayer, conf.NETWIDTH, conf.GROUNDLAYERHEIGHT, this.netColor, conf.GROUNDLAYERWIDTH/2 - conf.NETWIDTH/2, 0);
@@ -469,16 +474,30 @@ var game = {
         this.socket = sock;
     },
 
-    setPlayer(player1, player2){
-        this.playerOne.sprite.posX = player1.posX;
-        this.playerOne.sprite.posY = player1.posY;
-        this.playerOne.originalPosition = player1.originalPosition;
-        this.playerOne.imagePath = player1.imagePath;
+    setPlayer(player1, player2, player3, player4){
+        game.playerOne.sprite.posX = player1.posX;
+        game.playerOne.sprite.posY = player1.posY;
+        game.playerOne.originalPosition = player1.originalPosition;
+        game.playerOne.imagePath = player1.imagePath;
+        game.playerOne.playerId = player1.playerId;
 
-        this.playerTwo.sprite.posX = player2.posX;
-        this.playerTwo.sprite.posY = player2.posY;
-        this.playerTwo.originalPosition = player2.originalPosition;
-        this.playerTwo.imagePath = player2.imagePath;
+        game.playerOneBis.sprite.posX = player2.posX;
+        game.playerOneBis.sprite.posY = player2.posY;
+        game.playerOneBis.originalPosition = player2.originalPosition;
+        game.playerOneBis.imagePath = player2.imagePath;
+        game.playerOneBis.playerId = player2.playerId;
+
+        game.playerTwo.sprite.posX = player3.posX;
+        game.playerTwo.sprite.posY = player3.posY;
+        game.playerTwo.originalPosition = player3.originalPosition;
+        game.playerTwo.imagePath = player3.imagePath;
+        game.playerTwo.playerId = player3.playerId;
+
+        game.playerTwoBis.sprite.posX = player4.posX;
+        game.playerTwoBis.sprite.posY = player4.posY;
+        game.playerTwoBis.originalPosition = player4.originalPosition;
+        game.playerTwoBis.imagePath = player4.imagePath;
+        game.playerTwoBis.playerId = player4.playerId;
     },
 
     updateScore(player1, player2){
@@ -561,13 +580,33 @@ var game = {
         }
     },
 
-    animatePlayerMovements: function (nextPosY) {
-        while(game.playerTwo.sprite.posY < nextPosY){
-            game.playerTwo.sprite.posY++;
-        }
+    animatePlayerMovements: function (players) {
 
-        while(game.playerTwo.sprite.posY > nextPosY){
-            game.playerTwo.sprite.posY--;
+        for (let i = 0; i < 4; i++){
+            if(game.playerOneBis.playerId == players[i].playerId){
+                while(game.playerOneBis.sprite.posY < players[i].posY){
+                    game.playerOneBis.sprite.posY++;
+                }
+                while(game.playerOneBis.sprite.posY > players[i].posY){
+                    game.playerOneBis.sprite.posY--;
+                }
+            }
+            else if(game.playerTwo.playerId == players[i].playerId){
+                while(game.playerTwo.sprite.posY < players[i].posY){
+                    game.playerTwo.sprite.posY++;
+                }
+                while(game.playerTwo.sprite.posY > players[i].posY){
+                    game.playerTwo.sprite.posY--;
+                }
+            }
+            else if(game.playerTwoBis.playerId == players[i].playerId){
+                while(game.playerTwoBis.sprite.posY < players[i].posY){
+                    game.playerTwoBis.sprite.posY++;
+                }
+                while(game.playerTwoBis.sprite.posY > players[i].posY){
+                    game.playerTwoBis.sprite.posY--;
+                }
+            }
         }
     },
 

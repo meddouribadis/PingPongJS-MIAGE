@@ -17,6 +17,7 @@ let numberOfPlayerReady = 0;
 let players = {};
 let ball = {};
 let playerIndex = [];
+let requiredPlayers = 4;
 
 // Fichiers statiques
 app.use(express.static(__dirname));
@@ -71,14 +72,40 @@ io.sockets.on('connection', function (socket) {
         ai : false,
         ready : false,
         imagePath : "./img/playerOne.png",
-        playerId: socket.id
+        playerId: socket.id,
+        index : 1,
+        team : 1
     };
 
-    if(numberOfPlayer == 2){
+    if(numberOfPlayer == 2 && requiredPlayers == 2){
         players[socket.id].posX = 650;
         players[socket.id].posY = 200;
         players[socket.id].originalPosition = "right";
         players[socket.id].imagePath = "./img/playerTwo.png";
+    }
+
+    if(numberOfPlayer == 2 && requiredPlayers == 4){
+        players[socket.id].posX = 30 + 150;
+        players[socket.id].posY = 200;
+        players[socket.id].originalPosition = "left";
+        players[socket.id].imagePath = "./img/playerOne.png";
+        players[socket.id].index = 2;
+    }
+    else if(numberOfPlayer == 3 && requiredPlayers == 4){
+        players[socket.id].posX = 650 - 150;
+        players[socket.id].posY = 200;
+        players[socket.id].originalPosition = "right";
+        players[socket.id].imagePath = "./img/playerTwo.png";
+        players[socket.id].index = 3;
+        players[socket.id].team = 2;
+    }
+    else if(numberOfPlayer == 4 && requiredPlayers == 4){
+        players[socket.id].posX = 650;
+        players[socket.id].posY = 200;
+        players[socket.id].originalPosition = "right";
+        players[socket.id].imagePath = "./img/playerTwo.png";
+        players[socket.id].index = 4;
+        players[socket.id].team = 2;
     }
 
     ball = {
@@ -139,8 +166,8 @@ io.sockets.on('connection', function (socket) {
 
     };
 
-    if(numberOfPlayer == 2){
-        console.log("2 Joueurs");
+    if(numberOfPlayer == requiredPlayers){
+        console.log("Mode "+ requiredPlayers +" Joueurs");
         console.log(players);
         io.emit('cool', "2 joueurs detectés !");
         io.emit('game', "");
@@ -160,20 +187,27 @@ io.sockets.on('connection', function (socket) {
             players[idTemp].originalPosition = "right";
             players[idTemp].imagePath = "./img/playerOne.png";
         }
-        if(numberOfPlayer < 2 && numberOfPlayer > 0){
+        if(numberOfPlayer < requiredPlayers && numberOfPlayer > 0){
             playerIndex = [];
             io.emit('refresh', "refresh");
         }
     });
 
     socket.on('movements', function (message) {
-        console.log("Speed : " + ball.speed);
         io.emit('cool', message.posY);
         players[socket.id].posY = message.posY;
-        io.emit('updateMove', {
-            clientId : socket.id,
-            player : players[socket.id]
-        });
+
+        if(requiredPlayers == 2){
+            io.emit('updateMove', {
+                clientId : socket.id,
+                player : players[socket.id]
+            });
+        }
+        else if(requiredPlayers == 4){
+            console.log(players);
+            io.emit('updateMove', Object.values(players));
+        }
+
     });
 
     socket.on('collideBall', function (newDirections) {
@@ -185,7 +219,7 @@ io.sockets.on('connection', function (socket) {
         players[socket.id].ready = true;
         console.log("Player " + socket.id + " is ready !");
         numberOfPlayerReady++;
-        if(numberOfPlayerReady == 2){
+        if(numberOfPlayerReady == requiredPlayers){
             ball.speed = 0.8;
             io.emit("allPlayersReady", "");
         }
@@ -202,8 +236,18 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
+    socket.on('twoPlayers', function (data) {
+        console.log("Switching to default 2 players mode");
+        requiredPlayers = 2;
+    });
+
+    socket.on('fourPlayers', function (data) {
+        console.log("Switching to 4 players mode");
+        requiredPlayers = 4;
+    });
+
     function moveBall(){
-        if(numberOfPlayer == 2 && numberOfPlayerReady == 2){
+        if(numberOfPlayer == requiredPlayers && numberOfPlayerReady == requiredPlayers){
             ball.inGame = true;
             ball.bounce();
             ball.move();

@@ -109,22 +109,24 @@
             });
 
             socket.on('updateMove', function(data){
-
-                console.log("Message reçu "+  data);
-                console.log(game.socket.id);
-                if(game.socket.id != data.clientId){
-                    //game.playerTwo.sprite.posY = data.player.posY;
-                    game.animatePlayerMovements(data.player.posY);
-                }
+                console.log(data);
+                //game.playerTwo.sprite.posY = data.player.posY;
+                game.animatePlayerMovements(data);
 
             });
 
             socket.on('updatePlayers', function(players){
                 if(game.socket.id == players[0].playerId){
-                    game.setPlayer(players[0], players[1]);
+                    game.setPlayer(players[0], players[1], players[2], players[3]);
                 }
-                else {
-                    game.setPlayer(players[1], players[0]);
+                else if(game.socket.id == players[1].playerId) {
+                    game.setPlayer(players[1], players[0], players[2], players[3]);
+                }
+                else if(game.socket.id == players[2].playerId) {
+                    game.setPlayer(players[2], players[3], players[0], players[1]);
+                }
+                else if(game.socket.id == players[3].playerId) {
+                    game.setPlayer(players[3], players[2], players[0], players[1]);
                 }
             });
 
