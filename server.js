@@ -9,6 +9,7 @@ let http = require("http").Server(app);
 let async = require("async");
 let io = require("socket.io")(http);
 let cors = require("cors");
+let favicon = require('serve-favicon');
 require("dotenv").config();
 // --
 
@@ -21,6 +22,7 @@ let requiredPlayers = 4;
 
 // Fichiers statiques
 app.use(express.static(__dirname));
+app.use(favicon(path.join(__dirname, 'img', 'favicon.png')))
 
 // Autoriser des requetes de plusieurs domaines
 app.use((req, res, next) => {
