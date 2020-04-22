@@ -9,6 +9,7 @@ let http = require("http").Server(app);
 let async = require("async");
 let io = require("socket.io")(http);
 let cors = require("cors");
+require("dotenv").config();
 // --
 
 let numberOfPlayer = 0;
@@ -403,6 +404,6 @@ io.sockets.on("connection", function (socket) {
 // ------------------------
 // START SERVER
 // ------------------------
-http.listen(3010, function () {
-  console.info("HTTP server started on port 3010");
+http.listen(process.env.PORT, function () {
+  console.info("HTTP server started on port " + process.env.PORT);
 });
