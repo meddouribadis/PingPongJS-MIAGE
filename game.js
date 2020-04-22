@@ -129,6 +129,8 @@ var game = {
         this.initScreenRes();
         //this.resizeDisplayData(conf,this.ratioResX,this.ratioResY);
 
+        game.socket.emit('twoPlayers', "I'm ready !");
+
         this.groundLayer= game.display.createLayer("terrain", conf.GROUNDLAYERWIDTH, conf.GROUNDLAYERHEIGHT, this.divGame, 0, "#000000", 0, 0);
         game.display.drawRectangleInLayer(this.groundLayer, conf.NETWIDTH, conf.GROUNDLAYERHEIGHT, this.netColor, conf.GROUNDLAYERWIDTH/2 - conf.NETWIDTH/2, 0);
 
