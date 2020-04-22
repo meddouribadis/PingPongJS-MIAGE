@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  pong_server:
+    build:
+      context: '.'
+    container_name: pong
+    ports:
+      - "3010:3010"
