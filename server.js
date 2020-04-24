@@ -238,7 +238,7 @@ io.sockets.on("connection", function (socket) {
       newDirections.playerID,
       ball
     );
-    ball.speedUp();
+    if(requiredPlayers == 2) ball.speedUp();
   });
 
   socket.on("playerReady", function (message) {
@@ -264,6 +264,7 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("twoPlayers", function (data) {
     console.log("Switching to default 2 players mode");
+    if(requiredPlayers == 4) io.emit("refresh", "refresh");
     requiredPlayers = 2;
   });
 

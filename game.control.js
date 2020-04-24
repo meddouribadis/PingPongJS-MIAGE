@@ -17,7 +17,7 @@ game.control = {
         }
 
         if ( event.keyCode == game.keycode.SPACEBAR ) {
-
+            event.preventDefault();
             if(!game.partyStarted && game.gameOn && game.multiplayer == false){
                 var sound = game.gameMusic;
                 var soundPromise = sound.play();

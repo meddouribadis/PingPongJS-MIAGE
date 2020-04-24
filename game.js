@@ -291,7 +291,7 @@ var game = {
     lostBall : function() {
         if ( this.ball.lost(this.playerOne) ) {
             this.playerTwo.score++;
-            if ( this.playerTwo.score > 0 ) {
+            if ( this.playerTwo.score > 2 ) {
                 this.gameOn = false;
                 this.ball.ballOnPurpose = true;
                 this.endOfTheParty(false);
@@ -304,7 +304,7 @@ var game = {
             }
         } else if ( this.ball.lost(this.playerTwo) ) {
             this.playerOne.score++;
-            if ( this.playerOne.score > 1 ) {
+            if ( this.playerOne.score > 2 ) {
                 this.gameOn = false;
                 this.ball.ballOnPurpose = true;
                 this.endOfTheParty(true);
@@ -458,6 +458,17 @@ var game = {
     updateScore(player1, player2){
         this.playerOne.score = player1.score;
         this.playerTwo.score = player2.score;
+
+        if(player1.score > 3){
+            this.gameOn = false;
+            this.ball.ballOnPurpose = true;
+            this.endOfTheParty(true);
+        }
+        if(player2.score > 3){
+            this.gameOn = false;
+            this.ball.ballOnPurpose = true;
+            this.endOfTheParty(false);
+        }
     },
 
     resetGame(){
