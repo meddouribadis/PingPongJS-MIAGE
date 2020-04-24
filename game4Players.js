@@ -78,12 +78,12 @@ var game = {
       var returnValue = false;
       if (
         player.originalPosition == "left" &&
-        this.sprite.posX < player.sprite.posX - this.sprite.width
+        this.sprite.posX < 30 - this.sprite.width
       ) {
         returnValue = true;
       } else if (
         player.originalPosition == "right" &&
-        this.sprite.posX > player.sprite.posX + player.sprite.width
+        this.sprite.posX > 650 + player.sprite.width
       ) {
         returnValue = true;
       }
