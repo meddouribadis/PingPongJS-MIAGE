@@ -132,7 +132,11 @@ io.sockets.on("connection", function (socket) {
       } else if (this.ballOnPurpose == 2) {
         this.posX = players[playerIndex[2]].posX - 15;
         this.posY = players[playerIndex[2]].posY + 20;
+      } else if (this.ballOnPurpose == 4) {
+        this.posX = players[playerIndex[4]].posX - 15;
+        this.posY = players[playerIndex[4]].posY + 20;
       }
+
     },
 
     bounce: function () {
@@ -213,6 +217,10 @@ io.sockets.on("connection", function (socket) {
     io.emit("cool", message.posY);
     players[socket.id].posY = message.posY;
 
+    if(ball.ballOnPurpose){
+      ball.speed = 0.8;
+    }
+
     if (requiredPlayers == 2) {
       io.emit("updateMove", {
         clientId: socket.id,
@@ -262,6 +270,7 @@ io.sockets.on("connection", function (socket) {
   socket.on("fourPlayers", function (data) {
     console.log("Switching to 4 players mode");
     requiredPlayers = 4;
+    io.emit("goFourPlayers", "goFourPlayers");
   });
 
   function moveBall() {
@@ -364,7 +373,7 @@ io.sockets.on("connection", function (socket) {
       ball.posY = 200;
       ball.directionX = -1;
       ball.directionY = 1;
-      ball.ballOnPurpose = 2;
+      ball.ballOnPurpose = requiredPlayers;
     }
 
     updateAndSendScore(idOfLooser);

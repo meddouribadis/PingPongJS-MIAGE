@@ -162,6 +162,10 @@
                 document.location.reload(false);
             });
 
+            socket.on('goFourPlayers', function (message) {
+                window.location = 'http://localhost:3010/fourPlayers';
+            });
+
         });
 
     </script>
