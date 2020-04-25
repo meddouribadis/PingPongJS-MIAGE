@@ -336,6 +336,56 @@ io.sockets.on("connection", function (socket) {
     }
   }
 
+  function changeBallPath4Players(position, playerID, ball) {
+    if (position == "left") {
+      switch (ballOnPlayer(players[playerID], ball)) {
+        case "TOP":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = -3;
+          break;
+        case "MIDDLETOP":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = -1;
+          break;
+        case "CENTER":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = 0;
+          break;
+        case "MIDDLEBOTTOM":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = 1;
+          break;
+        case "BOTTOM":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = 3;
+          break;
+      }
+    } else {
+      switch (ballOnPlayer(players[playerID], ball)) {
+        case "TOP":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = -3;
+          break;
+        case "MIDDLETOP":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = -1;
+          break;
+        case "CENTER":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = 0;
+          break;
+        case "MIDDLEBOTTOM":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = 1;
+          break;
+        case "BOTTOM":
+          ball.directionX = ball.directionX * -1;
+          ball.directionY = 3;
+          break;
+      }
+    }
+  }
+
   function ballOnPlayer(player, ball) {
     var returnValue = "CENTER";
     var playerPositions = 70 / 5;
