@@ -18,7 +18,6 @@ body {
 }
 
 .bd-navbar {
-    font-family: ROCKET;
     height: 80px;
     min-height: 4rem;
     background-color: #005793;
@@ -122,6 +121,36 @@ body {
     padding: 10px;
     max-height: 240px;
     overflow-y: scroll;
+}
+
+.bd-footer{
+    background: #135793;
+    color: #d6d6d6;
+}
+
+.bd-footer-links {
+    padding-left: 0;
+    margin-bottom: 1rem;
+}
+
+.bd-footer-links li {
+    display: inline-block;
+}
+
+.bd-footer-links a {
+    text-decoration: none;
+    font-weight: 600;
+    color: white;
+}
+
+.bd-footer a {
+    text-decoration: none;
+    font-weight: 800;
+    color: white;
+}
+
+.bd-footer-links li+li {
+    margin-left: 1rem;
 }
 
 /*@media (min-width: 576px){

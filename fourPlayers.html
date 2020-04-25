@@ -42,7 +42,19 @@
 
     <body>
         <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar mb-5">
-            <img src="https://www.univ-evry.fr/fileadmin/mediatheque/logo-ueve.png" class="img-fluid rounded mx-auto d-block" alt="Université d'Evry">
+            <a href="/" class="navbar-brand mr-0 mr-md-2">
+                <img src="https://www.univ-evry.fr/fileadmin/mediatheque/logo-ueve.png" class="img-fluid rounded d-block" alt="Université d'Evry">
+            </a>
+            <div class="navbar-nav-scroll">
+                <ul class="navbar-nav bd-navbar-nav flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/fourPlayers">4 Joueurs</a>
+                    </li>
+                </ul>
+            </div>
         </header>
 
         <div class="container-fluid">
@@ -76,6 +88,19 @@
             </div>
         </div>
 
+        <footer class="bd-footer">
+            <div class="container-fluid p-3 p-md-5">
+                <ul class="bd-footer-links">
+                    <li><a href="https://github.com/meddouribadis">GitHub</a></li>
+                    <li><a href="https://twitter.com/getbootstrap">Twitter</a></li>
+                    <li><a href="/docs/4.4/examples/">Examples</a></li>
+                    <li><a href="/docs/4.4/about/overview/">About</a></li>
+                </ul>
+                <p>Développé à l'aide des outils <a href="https://getbootstrap.com/">Bootstrap</a>, <a href="https://socket.io/">Socket.io</a> et
+                    <a href="https://nodejs.org/en/">Node.JS</a>.
+                </p>
+            </div>
+        </footer>
     </body>
 
     <script src="/socket.io/socket.io.js"></script>
