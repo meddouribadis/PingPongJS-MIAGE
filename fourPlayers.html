@@ -155,12 +155,13 @@
                 }
             });
 
-            socket.on('updateScore', function(players){
-                if(game.socket.id == players[0].playerId){
-                    game.updateScore(players[0], players[1]);
+            socket.on('updateScore', function(scoreTeam){
+                console.log(game.playerOne.team);
+                if(game.playerOne.team === 1){
+                    game.updateScore(scoreTeam[0], scoreTeam[1]);
                 }
                 else {
-                    game.updateScore(players[1], players[0]);
+                    game.updateScore(scoreTeam[0], scoreTeam[1]);
                 }
             });
 

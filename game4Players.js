@@ -156,7 +156,7 @@ var game = {
   playersBallLayer: null,
   partyStarted: false,
   divGame: null,
-  gameOn: false,
+  gameOn: true,
   startGameButton: null,
   twoPlayersButton: null,
   fourPlayersButton: null,
@@ -702,8 +702,8 @@ var game = {
   },
 
   updateScore(player1, player2) {
-    this.playerOne.score = player1.score;
-    this.playerTwo.score = player2.score;
+    this.playerOne.score = player1;
+    this.playerTwo.score = player2;
   },
 
   resetGame() {

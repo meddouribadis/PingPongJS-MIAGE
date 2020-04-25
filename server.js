@@ -17,6 +17,7 @@ let numberOfPlayer = 0;
 let numberOfPlayerReady = 0;
 let players = {};
 let ball = {};
+let scoreTeam = [0, 0];
 let playerIndex = [];
 let requiredPlayers = 4;
 
@@ -209,6 +210,7 @@ io.sockets.on("connection", function (socket) {
     }
     if (numberOfPlayer < requiredPlayers && numberOfPlayer > 0) {
       playerIndex = [];
+      scoreTeam = [0, 0];
       io.emit("refresh", "refresh");
     }
   });
@@ -427,9 +429,17 @@ io.sockets.on("connection", function (socket) {
       ball.ballOnPurpose = requiredPlayers;
     }
 
-    updateAndSendScore(idOfLooser);
-    io.emit("updateBall", ball);
-    io.emit("updateScore", Object.values(players));
+    if(requiredPlayers == 2){
+      updateAndSendScore(idOfLooser);
+      io.emit("updateBall", ball);
+      io.emit("updateScore", Object.values(players));
+    }
+    else if(requiredPlayers == 4){
+      update4PlayersScore(idOfLooser);
+      io.emit("updateBall", ball);
+      io.emit("updateScore", scoreTeam);
+    }
+
   }
 
   function updateAndSendScore(idOfLooser) {
@@ -438,6 +448,15 @@ io.sockets.on("connection", function (socket) {
         players[key].score += 1;
         console.log("Player Score : " + players[key].score);
       }
+    }
+  }
+
+  function update4PlayersScore(idOfLooser) {
+    if(players[idOfLooser].team == 1){
+      scoreTeam[1] += 1/2;
+    }
+    else if(players[idOfLooser].team == 2){
+      scoreTeam[0] += 1/2;
     }
   }
 
