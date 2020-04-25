@@ -328,7 +328,12 @@ var game = {
         }
 
         this.scoreLayer.clear();
-        this.displayScore(this.playerOne.score, this.playerTwo.score);
+        if(this.playerOne.originalPosition == "left"){
+            this.displayScore(this.playerOne.score, this.playerTwo.score);
+        }
+        else{
+            this.displayScore(this.playerTwo.score, this.playerOne.score);
+        }
     },
 
     ballOnPlayer : function(player, ball) {
