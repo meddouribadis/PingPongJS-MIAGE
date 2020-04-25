@@ -677,24 +677,28 @@ var game = {
     game.playerOne.originalPosition = player1.originalPosition;
     game.playerOne.imagePath = player1.imagePath;
     game.playerOne.playerId = player1.playerId;
+    game.playerOne.team = player1.team;
 
     game.playerOneBis.sprite.posX = player2.posX;
     game.playerOneBis.sprite.posY = player2.posY;
     game.playerOneBis.originalPosition = player2.originalPosition;
     game.playerOneBis.imagePath = player2.imagePath;
     game.playerOneBis.playerId = player2.playerId;
+    game.playerOneBis.team = player2.team;
 
     game.playerTwo.sprite.posX = player3.posX;
     game.playerTwo.sprite.posY = player3.posY;
     game.playerTwo.originalPosition = player3.originalPosition;
     game.playerTwo.imagePath = player3.imagePath;
     game.playerTwo.playerId = player3.playerId;
+    game.playerTwo.team = player3.team;
 
     game.playerTwoBis.sprite.posX = player4.posX;
     game.playerTwoBis.sprite.posY = player4.posY;
     game.playerTwoBis.originalPosition = player4.originalPosition;
     game.playerTwoBis.imagePath = player4.imagePath;
     game.playerTwoBis.playerId = player4.playerId;
+    game.playerTwoBis.team = player4.team;
   },
 
   updateScore(player1, player2) {
