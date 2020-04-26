@@ -7,19 +7,17 @@
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="js/conf.js"></script>
-        <script src="js/game.js"></script>
+        <script src="js/game2Players.js"></script>
         <script src="js/game.display.js"></script>
         <script src="js/game.keycode.js"></script>
         <script src="js/game.control.js"></script>
         <script src="js/game.ai.js"></script>
         <script>
             (function () {
-                // début du code isolé
                 var requestAnimId;
 
                 var initialisation = function() {
-                    // le code de l'initialisation
-                    game.init(false);
+                    game.init();
                     requestAnimId = window.requestAnimationFrame(main); // premier appel de main au rafraîchissement de la page
                 };
 
@@ -32,34 +30,33 @@
                     if(game.ball.inGame && game.multiplayer){ game.lostBallMultiplayer(); }
                     if(!game.multiplayer) game.ai.move();
                     game.collideBallWithPlayersAndAction();
-                    requestAnimId = window.requestAnimationFrame(main); // rappel de main au prochain rafraîchissement de la page
+                    requestAnimId = window.requestAnimationFrame(main);
                 };
 
-                window.onload = initialisation; // appel de la fonction initialisation au chargement de la page
-                // fin du code isolé
+                window.onload = initialisation;
             })();
         </script>
     </head>
 
     <body>
-        <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar mb-5">
-            <a href="/" class="navbar-brand mr-0 mr-md-2">
-                <img src="https://www.univ-evry.fr/fileadmin/mediatheque/logo-ueve.png" class="img-fluid rounded d-block" alt="Université d'Evry">
-            </a>
-            <div class="navbar-nav-scroll">
-                <ul class="navbar-nav bd-navbar-nav flex-row">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/"><i class="fas fa-gamepad"></i> Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="/twoPlayers"><i class="fas fa-atom"></i> 1vs1</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="/fourPlayers"><i class="fas fa-bullseye"></i> 2vs2</a>
-                    </li>
-                </ul>
-            </div>
-        </header>
+    <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar mb-5">
+        <a href="/" class="navbar-brand mr-0 mr-md-2">
+            <img src="https://www.univ-evry.fr/fileadmin/mediatheque/logo-ueve.png" class="img-fluid rounded d-block" alt="Université d'Evry">
+        </a>
+        <div class="navbar-nav-scroll">
+            <ul class="navbar-nav bd-navbar-nav flex-row">
+                <li class="nav-item">
+                    <a class="nav-link " href="/"><i class="fas fa-gamepad"></i> Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/twoPlayers"><i class="fas fa-atom"></i> 1vs1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="/fourPlayers"><i class="fas fa-bullseye"></i> 2vs2</a>
+                </li>
+            </ul>
+        </div>
+    </header>
 
         <div class="container-fluid">
             <div class="row flex-xl-nowrap dataGame">
@@ -105,5 +102,96 @@
         </footer>
     </body>
 
+    <script src="/socket.io/socket.io.js"></script>
+
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $(document).ready(function(){
+
+        });
+
+        $(function () {
+            var socket = io();
+            game.setSocket(socket);
+
+            $('form').submit(function(e){
+                e.preventDefault(); // prevents page reloading
+                socket.emit('message', $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+
+            socket.on('cool', function(msg){
+                $('#shellGame').append($('<p class="user">').text(msg));
+            });
+
+            socket.on('game', function(data){
+                console.log("multiplayer activated");
+                game.playerTwo.ai = false;
+                game.multiplayer = true;
+                game.initMultiplayer();
+            });
+
+            socket.on('updateMove', function(data){
+
+                console.log("Message reçu "+  data);
+                console.log(game.socket.id);
+                if(game.socket.id != data.clientId){
+                    //game.playerTwo.sprite.posY = data.player.posY;
+                    game.animatePlayerMovements(data.player.posY);
+                }
+
+            });
+
+            socket.on('updatePlayers', function(players){
+                if(game.socket.id == players[0].playerId){
+                    game.setPlayer(players[0], players[1]);
+                }
+                else {
+                    game.setPlayer(players[1], players[0]);
+                }
+            });
+
+            socket.on('updateScore', function(players){
+                if(game.socket.id == players[0].playerId){
+                    game.updateScore(players[0], players[1]);
+                }
+                else {
+                    game.updateScore(players[1], players[0]);
+                }
+            });
+
+            socket.on('updateBall', function(data){
+
+                game.ball.sprite.posX = data.posX;
+                game.ball.sprite.posY = data.posY;
+                game.ball.directionX = data.directionX;
+                game.ball.directionY = data.directionY;
+                game.ball.speed = data.speed;
+                game.ball.inGame = data.inGame;
+
+            });
+
+            socket.on('allPlayersReady', function(message){
+                game.clearLayers();
+                //game.playMultiplayerSound();
+            });
+
+            socket.on('reset', function(message){
+                game.resetGame();
+                game.reinitGame();
+            });
+
+            socket.on('refresh', function (message) {
+                document.location.reload(false);
+            });
+
+            socket.on('goFourPlayers', function (message) {
+                window.location = 'http://localhost:3010/fourPlayers';
+            });
+
+        });
+
+    </script>
+
 </html>

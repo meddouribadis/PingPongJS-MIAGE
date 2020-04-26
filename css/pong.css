@@ -1,16 +1,16 @@
 @font-face {
     font-family: 'DS-DIGIB';
-    src: url('./fonts/ds_digital/DS-DIGIB.TTF');
+    src: url('../fonts/ds_digital/DS-DIGIB.TTF');
 }
 
 @font-face {
     font-family: 'ROCKET';
-    src: url('./fonts/rocket_vintage/rocket-vintage.ttf');
+    src: url('../fonts/rocket_vintage/rocket-vintage.ttf');
 }
 
 @font-face {
     font-family: 'ZELDA';
-    src: url('./fonts/zelda/zelda.otf');
+    src: url('../fonts/zelda/zelda.otf');
 }
 
 body {

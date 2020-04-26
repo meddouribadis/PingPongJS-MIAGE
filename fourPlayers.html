@@ -2,15 +2,16 @@
     <head>
         <title>Ping Pong MIAGE - Badis MEDDOURI</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="pong.css">
+        <link rel="stylesheet" href="css/pong.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="conf.js"></script>
-        <script src="game4Players.js"></script>
-        <script src="game.display.js"></script>
-        <script src="game.keycode.js"></script>
-        <script src="game.control.js"></script>
-        <script src="game.ai.js"></script>
+        <script src="js/conf.js"></script>
+        <script src="js/game4Players.js"></script>
+        <script src="js/game.display.js"></script>
+        <script src="js/game.keycode.js"></script>
+        <script src="js/game.control.js"></script>
+        <script src="js/game.ai.js"></script>
         <script>
             (function () {
                 // début du code isolé
@@ -48,10 +49,13 @@
             <div class="navbar-nav-scroll">
                 <ul class="navbar-nav bd-navbar-nav flex-row">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Accueil</a>
+                        <a class="nav-link " href="/"><i class="fas fa-gamepad"></i> Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/fourPlayers">4 Joueurs</a>
+                        <a class="nav-link " href="/twoPlayers"><i class="fas fa-atom"></i> 1vs1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/fourPlayers"><i class="fas fa-bullseye"></i> 2vs2</a>
                     </li>
                 </ul>
             </div>

@@ -57,6 +57,10 @@ app.get("/", (req, res) => {
 app.get("/fourPlayers", (req, res) => {
   res.sendFile(path.join(__dirname, "fourPlayers.html"));
 });
+
+app.get("/twoPlayers", (req, res) => {
+  res.sendFile(path.join(__dirname, "twoPlayers.html"));
+});
 // ------------------------
 //
 // ------------------------

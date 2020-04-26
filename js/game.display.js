@@ -154,4 +154,8 @@ game.display = {
         targetLayer.context2D.drawImage(image, x, y);
     },
 
+    animateTextInLayer : function (targetLayer, text, font, color, xStart, yStart) {
+
+    }
+
 }

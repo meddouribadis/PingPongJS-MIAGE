@@ -63,8 +63,8 @@ game.control = {
                 game.socket.emit('movements', {
                     posY : game.playerOne.sprite.posY,
                 });
+                console.log(game.socket.id);
             }
-            console.log(game.socket.id);
         } else if ( event.keyCode == game.keycode.KEYUP ) {
             game.playerOne.goUp = false;
             if(!game.playerTwo.ai && game.multiplayer){
