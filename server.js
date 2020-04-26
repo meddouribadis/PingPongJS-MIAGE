@@ -128,9 +128,11 @@ io.sockets.on("connection", function (socket) {
         this.posX += this.directionX * this.speed;
         this.posY += this.directionY * this.speed;
       } else if (this.ballOnPurpose == 1) {
+        this.speed = 0.8;
         this.posX = players[playerIndex[1]].posX + 15;
         this.posY = players[playerIndex[1]].posY + 20;
       } else if (this.ballOnPurpose == 2) {
+        this.speed = 0.8;
         this.posX = players[playerIndex[2]].posX - 15;
         this.posY = players[playerIndex[2]].posY + 20;
       } else if (this.ballOnPurpose == 4) {
@@ -469,7 +471,7 @@ io.sockets.on("connection", function (socket) {
       }
     }
 
-    console.log("Compteur : " + compteur + " et nbPla : " + numberOfPlayer)
+    //console.log("Compteur : " + compteur + " et nbPla : " + numberOfPlayer)
 
     if (compteur !== numberOfPlayer) {
       numberOfPlayer = compteur;
