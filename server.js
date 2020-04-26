@@ -201,6 +201,7 @@ io.sockets.on("connection", function (socket) {
     numberOfPlayerReady = 0;
     delete players[socket.id];
     io.emit("reset", "reset");
+    checkSockets();
     if (numberOfPlayer > 0) {
       var idTemp = Object.keys(players)[0];
       players[idTemp].posX = 30;
@@ -468,9 +469,12 @@ io.sockets.on("connection", function (socket) {
       }
     }
 
+    console.log("Compteur : " + compteur + " et nbPla : " + numberOfPlayer)
+
     if (compteur !== numberOfPlayer) {
       numberOfPlayer = compteur;
     }
+
   }
 
   setInterval(() => {
