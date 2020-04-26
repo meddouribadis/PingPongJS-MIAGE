@@ -6,6 +6,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         <script src="js/conf.js"></script>
         <script src="js/game.js"></script>
         <script src="js/game.display.js"></script>
@@ -13,7 +14,7 @@
         <script src="js/game.control.js"></script>
         <script src="js/game.ai.js"></script>
         <script>
-            (function () {
+        (function () {
                 // début du code isolé
                 var requestAnimId;
 
@@ -65,7 +66,20 @@
             <div class="row flex-xl-nowrap dataGame">
                 <div class="col-12 col-md-12 col-xl-3 bd-sidebar py-md-3 pl-md-5 mb-5 order-2">
                     <button id="startGame" type="button" class="btn btn-primary btn-lg btn-block">Start !</button>
-                    <button id="disableAI" type="button" class="btn btn-primary btn-lg btn-block">Mode 2 joueurs !</button>
+
+                    <div class="dropdown btn-block">
+                        <button class="btn btn-primary btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Partie en 4 pts
+                        </button>
+                        <div class="dropdown-menu w-100" aria-labelledby="dropdownMenu2">
+                            <button class="dropdown-item" type="button" onclick="setScore(1)">Partie en 1 pts</button>
+                            <button class="dropdown-item" type="button" onclick="setScore(2)">Partie en 2 pts</button>
+                            <button class="dropdown-item" type="button" onclick="setScore(4)">Partie en 4 pts</button>
+                            <button class="dropdown-item" type="button" onclick="setScore(8)">Partie en 8 pts</button>
+                            <button class="dropdown-item" type="button" onclick="setScore(16)">Partie en 16 pts</button>
+                        </div>
+                    </div>
+
                     <a href="/fourPlayers" id="fourPlayers" type="button" class="btn btn-primary btn-lg btn-block">Mode 4 joueurs !</a>
                     <hr>
                     <div class="shell">
@@ -106,4 +120,11 @@
     </body>
 
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        function setScore(points) {
+            var element = document.getElementById("dropdownMenu2");
+            element.innerHTML = "Partie en " + points + " points";
+            game.setWinScore(points);
+        }
+    </script>
 </html>
